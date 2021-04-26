@@ -11,15 +11,21 @@ import br.com.hillan.gitissues.IssueViewModelFactory
 import br.com.hillan.gitissues.R
 import br.com.hillan.gitissues.adapter.IssueListAdapter
 import br.com.hillan.gitissues.application.GitIssuesApplication
+import br.com.hillan.gitissues.dao.IssueDao
 import br.com.hillan.gitissues.models.Issue
+import br.com.hillan.gitissues.repository.IssueRepository
+import org.koin.android.ext.android.inject
 
 
 class MainActivity : AppCompatActivity() {
 
     //private lateinit var mIssueViewModel: IssueViewModel
 
+    private val repository: IssueRepository by inject()
+
     private val mIssueViewModel: IssueViewModel by viewModels {
-        IssueViewModelFactory((application as GitIssuesApplication).repository!!)
+        //IssueViewModelFactory((application as GitIssuesApplication).repository!!)
+        IssueViewModelFactory(repository)
     }
 
     private var adapter: IssueListAdapter = IssueListAdapter(listOf<Issue>(),this)

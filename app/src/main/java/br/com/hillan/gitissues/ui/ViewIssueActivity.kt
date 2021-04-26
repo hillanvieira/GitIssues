@@ -10,9 +10,11 @@ import br.com.hillan.gitissues.IssueViewModelFactory
 import br.com.hillan.gitissues.R
 import br.com.hillan.gitissues.application.GitIssuesApplication
 import br.com.hillan.gitissues.models.Issue
+import br.com.hillan.gitissues.repository.IssueRepository
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.mukesh.MarkdownView
+import org.koin.android.ext.android.inject
 import java.text.Format
 import java.text.SimpleDateFormat
 
@@ -25,9 +27,11 @@ class ViewIssueActivity : AppCompatActivity() {
     private lateinit var imageView:   ImageView
 
    // private lateinit var mIssueViewModel: IssueViewModel
+   private val repository: IssueRepository by inject()
 
     private val mIssueViewModel: IssueViewModel by viewModels {
-        IssueViewModelFactory((application as GitIssuesApplication).repository!!)
+        // IssueViewModelFactory((application as GitIssuesApplication).repository!!)
+        IssueViewModelFactory(repository)
     }
 
     private val issueId: Long by lazy {
