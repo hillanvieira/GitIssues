@@ -12,9 +12,14 @@ import br.com.hillan.gitissues.R
 import br.com.hillan.gitissues.adapter.IssueListAdapter
 import br.com.hillan.gitissues.application.GitIssuesApplication
 import br.com.hillan.gitissues.dao.IssueDao
+import br.com.hillan.gitissues.database.GitIssuesDatabase
 import br.com.hillan.gitissues.models.Issue
 import br.com.hillan.gitissues.repository.IssueRepository
+import br.com.hillan.gitissues.services.RetrofitInitializer
 import org.koin.android.ext.android.inject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class MainActivity : AppCompatActivity() {
@@ -36,6 +41,22 @@ class MainActivity : AppCompatActivity() {
 
         setTitle("Git Issues List")
 
+        val call = RetrofitInitializer().issueService().list()
+        call.enqueue(object: Callback<List<Issue>> {
+            override fun onResponse(call: Call<List<Issue>?>?,
+                                    response: Response<List<Issue>?>?) {
+                response?.body()?.let {
+                    //GitIssuesDatabase.databaseWriteExecutor.execute {  mIssueDao.insertList(it) }
+
+                    mIssueViewModel.insertList(it)
+
+                    //Log.i("RETROFIT_RESPONSE",it.toString())
+                }
+            }
+            override fun onFailure(call: Call<List<Issue>?>?,
+                                   t: Throwable?) {
+            }
+        })
 
        // mIssueViewModel = ViewModelProvider.AndroidViewModelFactory(getApplication()).create(IssueViewModel::class.java)
         mIssueViewModel.allIssues.observe(this,{

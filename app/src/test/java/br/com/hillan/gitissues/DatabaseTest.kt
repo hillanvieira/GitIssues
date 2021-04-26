@@ -21,12 +21,15 @@ class DatabaseTest : KoinTest {
 
     private val dbInstace: GitIssuesDatabase by inject()
 
+    private val repositoryInstance : IssueRepository by inject()
+
     @Test
     fun `should get the same instance of Database when run threads simultaneously`() {
         StandAloneContext.startKoin(listOf(repositoryModule)) with (Mockito.mock(Context::class.java))
         repeat(10) {
             thread(start = true) {
                 println(dbInstace)
+                //println(repositoryInstance)
             }
         }
         Thread.sleep(500)
