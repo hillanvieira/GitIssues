@@ -2,22 +2,23 @@ package br.com.hillan.gitissues
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.hillan.gitissues.adapter.IssueListAdapter
+import br.com.hillan.gitissues.application.GitIssuesApplication
 import br.com.hillan.gitissues.models.Issue
-import br.com.hillan.gitissues.services.RetrofitInitializer
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mMainViewModel: MainViewModel
+    //private lateinit var mIssueViewModel: IssueViewModel
+
+    private val mIssueViewModel: IssueViewModel by viewModels {
+        IssueViewModelFactory((application as GitIssuesApplication).repository!!)
+    }
 
     private var adapter: IssueListAdapter = IssueListAdapter(listOf<Issue>(),this)
 
@@ -28,8 +29,8 @@ class MainActivity : AppCompatActivity() {
         setTitle("Git Issues List")
 
 
-        mMainViewModel = ViewModelProvider.AndroidViewModelFactory(getApplication()).create(MainViewModel::class.java)
-        mMainViewModel.allIssues.observe(this,{
+       // mIssueViewModel = ViewModelProvider.AndroidViewModelFactory(getApplication()).create(IssueViewModel::class.java)
+        mIssueViewModel.allIssues.observe(this,{
 
             adapter = IssueListAdapter(it,this)
             configureRecyclerView()

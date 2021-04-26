@@ -15,7 +15,7 @@ private const val DATABASE_NAME = "issues.db"
 @Database(entities = [Issue::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class GitIssuesDatabase : RoomDatabase() {
-    abstract fun IssueDao(): IssueDao
+    abstract fun issueDao(): IssueDao
 
     companion object {
         @Volatile

@@ -3,15 +3,16 @@ package br.com.hillan.gitissues
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import br.com.hillan.gitissues.application.GitIssuesApplication
 import br.com.hillan.gitissues.models.Issue
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.mukesh.MarkdownView
 import java.text.Format
 import java.text.SimpleDateFormat
-import java.util.*
 
 class ViewIssueActivity : AppCompatActivity() {
 
@@ -21,7 +22,11 @@ class ViewIssueActivity : AppCompatActivity() {
     private lateinit var bodyText:    MarkdownView
     private lateinit var imageView:   ImageView
 
-    private lateinit var mMainViewModel: MainViewModel
+   // private lateinit var mIssueViewModel: IssueViewModel
+
+    private val mIssueViewModel: IssueViewModel by viewModels {
+        IssueViewModelFactory((application as GitIssuesApplication).repository!!)
+    }
 
     private val issueId: Long by lazy {
         intent.getLongExtra("issueId", 0)
@@ -34,17 +39,13 @@ class ViewIssueActivity : AppCompatActivity() {
 
         setTitle("Issue details")
 
-        mMainViewModel = ViewModelProvider.AndroidViewModelFactory(getApplication()).create(
-            MainViewModel::class.java
-        )
-        mMainViewModel.getIssueByID(issueId).observe(this, {
+       // mIssueViewModel = ViewModelProvider.AndroidViewModelFactory(getApplication()).create(IssueViewModel::class.java)
+        mIssueViewModel.getIssueByID(issueId).observe(this, {
 
             configureView(it)
 
         })
-
-
-
+        
     }
 
     private fun configureView(it: Issue) {

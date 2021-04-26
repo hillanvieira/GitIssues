@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
 import br.com.hillan.gitissues.models.Issue
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface IssueDao {
     @Query("SELECT * FROM issue")
-    fun getAll(): LiveData<List<Issue>>
+    fun getAll(): Flow<List<Issue>>
 
 //    @Query("SELECT * FROM issue WHERE id IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<Issue>
