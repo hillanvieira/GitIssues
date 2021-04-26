@@ -1,12 +1,14 @@
-package br.com.hillan.gitissues
+package br.com.hillan.gitissues.ui
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import br.com.hillan.gitissues.IssueViewModel
+import br.com.hillan.gitissues.IssueViewModelFactory
+import br.com.hillan.gitissues.R
 import br.com.hillan.gitissues.adapter.IssueListAdapter
 import br.com.hillan.gitissues.application.GitIssuesApplication
 import br.com.hillan.gitissues.models.Issue

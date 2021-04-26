@@ -1,7 +1,7 @@
 package br.com.hillan.gitissues.converters
 
 import androidx.room.TypeConverter
-import br.com.hillan.gitissues.IssueState
+import br.com.hillan.gitissues.models.IssueState
 
 import br.com.hillan.gitissues.models.User
 import com.google.gson.Gson

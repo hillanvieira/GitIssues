@@ -1,11 +1,13 @@
-package br.com.hillan.gitissues
+package br.com.hillan.gitissues.ui
 
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import br.com.hillan.gitissues.IssueViewModel
+import br.com.hillan.gitissues.IssueViewModelFactory
+import br.com.hillan.gitissues.R
 import br.com.hillan.gitissues.application.GitIssuesApplication
 import br.com.hillan.gitissues.models.Issue
 import com.bumptech.glide.Glide
@@ -45,7 +47,7 @@ class ViewIssueActivity : AppCompatActivity() {
             configureView(it)
 
         })
-        
+
     }
 
     private fun configureView(it: Issue) {

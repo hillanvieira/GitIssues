@@ -3,7 +3,6 @@ package br.com.hillan.gitissues.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import br.com.hillan.gitissues.IssueState
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
