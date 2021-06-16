@@ -24,7 +24,7 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
-    //private lateinit var mIssueViewModel: IssueViewModel
+    //private lateinit var mIssueViewModel: IssueViewModel//
 
     private val repository: IssueRepository by inject()
 
