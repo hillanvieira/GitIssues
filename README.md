@@ -1,5 +1,5 @@
 # GitIssues
-<img src="app.png" alt="app screen" style="width:400px;"/>
+<img src="app.png" alt="app screen" style="width:360px;"/>
 
 ## App Android em Kotlin para testar ferramentas como:
 * Koin (injeção de dependencia)
@@ -10,6 +10,8 @@
 
 ## Funcionalidades
 * Carregar uma lista de issues de um repositorio do GiHub e exibir os detalhes ao tocar num item da lista
+* Atualmente carregano a lista de issues da comunidade Android Dev BR (https://github.com/androiddevbr) que é dedicado a vagas para desenvolvedores android. 
 
 ## Como rodar o projeto!
  * Abrir o projeto na IDE Android Studio, criar um emulador ou usar um dispositivo fisico e dar play na aplicação.
+ 
