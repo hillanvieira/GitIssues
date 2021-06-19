@@ -3,36 +3,28 @@ package br.com.hillan.gitissues.ui
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import br.com.hillan.gitissues.IssueViewModel
-import br.com.hillan.gitissues.IssueViewModelFactory
 import br.com.hillan.gitissues.R
-import br.com.hillan.gitissues.application.GitIssuesApplication
 import br.com.hillan.gitissues.models.Issue
 import br.com.hillan.gitissues.repository.IssueRepository
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.mukesh.MarkdownView
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.Format
 import java.text.SimpleDateFormat
 
 class ViewIssueActivity : AppCompatActivity() {
-
 
     private lateinit var titleText:   TextView
     private lateinit var dateText:   TextView
     private lateinit var bodyText:    MarkdownView
     private lateinit var imageView:   ImageView
 
-   // private lateinit var mIssueViewModel: IssueViewModel
-   private val repository: IssueRepository by inject()
-
-    private val mIssueViewModel: IssueViewModel by viewModels {
-        // IssueViewModelFactory((application as GitIssuesApplication).repository!!)
-        IssueViewModelFactory(repository)
-    }
+    //Lazy Inject ViewModel Koin
+    private val mIssueViewModel: IssueViewModel by viewModel()
 
     private val issueId: Long by lazy {
         intent.getLongExtra("issueId", 0)
