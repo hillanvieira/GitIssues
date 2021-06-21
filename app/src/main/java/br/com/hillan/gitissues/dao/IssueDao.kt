@@ -14,6 +14,9 @@ interface IssueDao {
 //    @Query("SELECT * FROM issue WHERE id IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<Issue>
 
+    @Query("SELECT * FROM issue WHERE   id = (SELECT MAX(id)  FROM issue)  LIMIT 1")
+    fun getLastIssue(): Flow<Issue>
+
     @Query("SELECT * FROM issue WHERE id LIKE :id  LIMIT 1")
     fun findById(id: Long): LiveData<Issue>
 

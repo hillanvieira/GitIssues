@@ -1,6 +1,5 @@
 package br.com.hillan.gitissues.services
 
-import androidx.lifecycle.LiveData
 import br.com.hillan.gitissues.models.Issue
 import retrofit2.Call
 import retrofit2.http.GET

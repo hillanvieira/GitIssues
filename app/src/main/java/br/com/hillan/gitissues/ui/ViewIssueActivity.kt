@@ -7,11 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import br.com.hillan.gitissues.IssueViewModel
 import br.com.hillan.gitissues.R
 import br.com.hillan.gitissues.models.Issue
-import br.com.hillan.gitissues.repository.IssueRepository
+import br.com.hillan.gitissues.viewmodel.IssueDetailViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.mukesh.MarkdownView
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.Format
 import java.text.SimpleDateFormat
@@ -24,7 +23,7 @@ class ViewIssueActivity : AppCompatActivity() {
     private lateinit var imageView:   ImageView
 
     //Lazy Inject ViewModel Koin
-    private val mIssueViewModel: IssueViewModel by viewModel()
+    private val mIssueDetailViewModel: IssueDetailViewModel by viewModel()
 
     private val issueId: Long by lazy {
         intent.getLongExtra("issueId", 0)
@@ -38,7 +37,7 @@ class ViewIssueActivity : AppCompatActivity() {
         setTitle("Issue details")
 
        // mIssueViewModel = ViewModelProvider.AndroidViewModelFactory(getApplication()).create(IssueViewModel::class.java)
-        mIssueViewModel.getIssueByID(issueId).observe(this, {
+        mIssueDetailViewModel.getIssue(issueId).observe(this, {
 
             configureView(it)
 

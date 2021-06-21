@@ -3,26 +3,21 @@ package br.com.hillan.gitissues.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.hillan.gitissues.IssueViewModel
 import br.com.hillan.gitissues.R
 import br.com.hillan.gitissues.adapter.IssueListAdapter
 import br.com.hillan.gitissues.models.Issue
-import br.com.hillan.gitissues.services.RetrofitInitializer
 import org.koin.android.viewmodel.ext.android.viewModel
-
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-
 
 class MainActivity : AppCompatActivity() {
 
     //Lazy Inject ViewModel Koin
     private val mIssueViewModel: IssueViewModel by viewModel()
 
-    private var adapter: IssueListAdapter = IssueListAdapter(listOf<Issue>(),this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,14 +27,19 @@ class MainActivity : AppCompatActivity() {
 
         mIssueViewModel.allIssues.observe(this,{
 
-            adapter = IssueListAdapter(it,this)
-            configureRecyclerView()
-
+            if(it != null) {
+                configureRecyclerView(IssueListAdapter(it, this))
+            }
         })
+
+//        GlobalScope.launch(Dispatchers.Default) {
+//            delay(20000)
+//            sendNotification("20 seconds notification")
+//        }
 
     }
 
-    private fun configureRecyclerView() {
+    private fun configureRecyclerView(adapter: IssueListAdapter) {
         val recyclerView: RecyclerView = findViewById(R.id.issue_list)
         recyclerView.adapter = adapter
         adapter.whenClicked = this::openIssueView
@@ -55,6 +55,19 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, ViewIssueActivity::class.java)
         intent.putExtra("issueId", it.id)
         startActivity(intent)
+    }
+
+    private fun sendNotification(contentText: String) {
+        var builder = NotificationCompat.Builder(this, "GITISS01")
+            .setSmallIcon(R.drawable.notification_icon)
+            .setContentTitle("New Issue")
+            .setContentText(contentText)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        with(NotificationManagerCompat.from(this)) {
+            // notificationId is a unique int for each notification that you must define
+            notify(1, builder.build())
+        }
     }
 
 }
