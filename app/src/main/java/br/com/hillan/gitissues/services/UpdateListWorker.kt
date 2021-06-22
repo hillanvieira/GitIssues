@@ -1,7 +1,6 @@
 package br.com.hillan.gitissues.services
 
 import android.app.NotificationManager
-import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
@@ -9,7 +8,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import br.com.hillan.gitissues.R
@@ -37,15 +35,16 @@ class UpdateListWorker(context: Context, workerParams: WorkerParameters) :
 
     override fun doWork(): Result {
 
-        repository.updateListToDb()
         oldLastIssue = sharedpreferences.getString("lastIssueTitle", "no new issues")!!
 
         GlobalScope.launch {
-            delay(5000)
 
+            repository.updateListToDb()
+
+            delay(5000)
             repository.lastIssue.collect { it ->
                 newLastIssue = it.title
-                sharedpreferences.edit().putString("lastIssueTitle", newLastIssue).commit()
+                sharedpreferences.edit().putString("lastIssueTitle", it.title).commit()
                 if (oldLastIssue != newLastIssue) {
                     sendNotification(it.title)
                 }
