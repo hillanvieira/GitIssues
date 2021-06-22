@@ -46,10 +46,22 @@ class IssueRepository(
     }
 
     val allIssuesFromDb: Flow<List<Issue>> = mIssueDao.getAll()
+
     val lastIssue: Flow<Issue> = mIssueDao.getLastIssue()
+
+
+
+
+
 
     fun getIssueByID(id: Long): LiveData<Issue> {
         return mIssueDao.findById(id)
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun getLast(): Issue {
+        return mIssueDao.getLastIssue2()
     }
 
     @Suppress("RedundantSuspendModifier")

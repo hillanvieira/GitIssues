@@ -13,9 +13,12 @@ import androidx.work.WorkerParameters
 import br.com.hillan.gitissues.R
 import br.com.hillan.gitissues.repository.IssueRepository
 import br.com.hillan.gitissues.ui.MainActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
@@ -29,36 +32,36 @@ class UpdateListWorker(context: Context, workerParams: WorkerParameters) :
     var sharedpreferences: SharedPreferences =
         applicationContext.getSharedPreferences("gitissues_preferences", Context.MODE_PRIVATE)
 
-    lateinit var oldLastIssue: String
-
-    lateinit var newLastIssue: String
+    var oldLastIssue: String = ""
+    var newLastIssue: String = ""
 
     override fun doWork(): Result {
 
         oldLastIssue = sharedpreferences.getString("lastIssueTitle", "no new issues")!!
 
-        GlobalScope.launch {
-
+        GlobalScope.launch(Dispatchers.IO) {
             repository.updateListToDb()
 
             delay(5000)
-            repository.lastIssue.collect { it ->
-                newLastIssue = it.title
-                sharedpreferences.edit().putString("lastIssueTitle", it.title).commit()
-                if (oldLastIssue != newLastIssue) {
-                    sendNotification(it.title)
-                }
+            //repository.lastIssue.take(1).collect { it -> newLastIssue = it.title }
+            Log.i("WORK_NOTIFICATION", repository.getLast().title)
+            Log.i("WORK_NOTIFICATION", "PREPARING")
+            if (oldLastIssue != newLastIssue) {
+                sendNotification(newLastIssue)
+                Log.i("WORK_NOTIFICATION", "NOTIFYING")
+            }else{
+                Log.i("WORK_NOTIFICATION", "NOT_NOTIFY")
             }
+            sharedpreferences.edit().putString("lastIssueTitle", newLastIssue).apply()
         }
+        Log.i("WORK_", "LAUNCHED")
 
-        Log.i("WORK_NOTIFICATION", "DONE")
         return Result.success()
     }
 
     private fun sendNotification(contentText: String) {
         val intent = Intent(applicationContext, MainActivity::class.java)
-        intent.flags = (Intent.FLAG_ACTIVITY_CLEAR_TOP
-                or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        intent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
         val notificationManager =
             applicationContext.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
