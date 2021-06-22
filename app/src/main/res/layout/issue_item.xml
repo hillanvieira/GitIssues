@@ -40,7 +40,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            tools:text="Title" />
+            tools:text="@tools:sample/lorem"
+            />
 
         <TextView
             android:id="@+id/issue_item_state"
@@ -51,7 +52,8 @@
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/issue_item_title"
-            tools:text="State" />
+            tools:text="@tools:sample/date/ddmmyy"
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
