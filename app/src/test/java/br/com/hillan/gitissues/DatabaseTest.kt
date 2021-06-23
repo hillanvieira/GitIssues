@@ -18,7 +18,7 @@ class DatabaseTest : KoinTest {
 
     val appModule = module {
         single { GitIssuesDatabase.getInstance(Mockito.mock(Context::class.java))!! }
-        single { RetrofitInitializer().provideRetrofit() }
+        single  { RetrofitInitializer().provideRetrofit() }
         factory {
             IssueRepository(
                 get<GitIssuesDatabase>().issueDao(),

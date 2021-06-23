@@ -23,7 +23,7 @@ class GitIssuesApplication : Application() {
     private val appModule = module {
 
         //koin single each injection will use the same instance
-        factory { GitIssuesDatabase.getInstance(applicationContext)!! }
+        single { GitIssuesDatabase.getInstance(applicationContext)!! }
         single { RetrofitInitializer().provideRetrofit() }
 
         //koin factory will create a new instance each time the component is injected
