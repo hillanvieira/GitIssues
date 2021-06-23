@@ -16,11 +16,9 @@ class MainActivity : AppCompatActivity() {
     //Lazy Inject ViewModel Koin
     private val mIssueViewModel: IssueViewModel by viewModel()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
 
         setTitle("Git Issues List")
 
@@ -31,7 +29,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
-
 
     private fun configureRecyclerView(adapter: IssueListAdapter) {
         val recyclerView: RecyclerView = findViewById(R.id.issue_list)

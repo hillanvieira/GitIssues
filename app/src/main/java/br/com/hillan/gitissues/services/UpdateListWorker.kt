@@ -44,7 +44,8 @@ class UpdateListWorker(context: Context, workerParams: WorkerParameters) :
 
             delay(5000)
             //repository.lastIssue.take(1).collect { it -> newLastIssue = it.title }
-            Log.i("WORK_NOTIFICATION", repository.getLast().title)
+            newLastIssue = repository.getLast().title
+            Log.i("WORK_NOTIFICATION", newLastIssue)
             Log.i("WORK_NOTIFICATION", "PREPARING")
             if (oldLastIssue != newLastIssue) {
                 sendNotification(newLastIssue)
