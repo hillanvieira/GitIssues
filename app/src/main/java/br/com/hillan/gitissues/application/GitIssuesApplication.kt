@@ -10,7 +10,6 @@ import br.com.hillan.gitissues.IssueViewModel
 import br.com.hillan.gitissues.database.GitIssuesDatabase
 import br.com.hillan.gitissues.repository.IssueRepository
 import br.com.hillan.gitissues.services.RetrofitInitializer
-import br.com.hillan.gitissues.viewmodel.IssueDetailViewModel
 import org.koin.android.ext.android.startKoin
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.viewmodel.ext.koin.viewModel
@@ -36,7 +35,6 @@ class GitIssuesApplication : Application() {
 
         //koin viewModel
         viewModel { IssueViewModel(this.androidApplication() ,get()) }
-        viewModel { IssueDetailViewModel(get()) }
 
     }
 

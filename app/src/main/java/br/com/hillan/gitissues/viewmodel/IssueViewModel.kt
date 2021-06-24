@@ -59,5 +59,9 @@ class IssueViewModel(
         mRepository.insertList(issues = issues)
     }
 
+    fun getIssue(id: Long): LiveData<Issue> {
+        val issue: LiveData<Issue> = mRepository.getIssueByID(id)
+        return issue
+    }
 
 }

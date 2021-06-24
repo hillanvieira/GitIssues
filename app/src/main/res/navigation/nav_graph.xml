@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@+id/issueListFragment">
+
+
+    <fragment
+        android:id="@+id/issueListFragment"
+        android:name="br.com.hillan.gitissues.ui.fragments.IssueListFragment"
+        android:label="IssueListFragment"
+        tools:layout="@layout/fragment_issue_list">
+        <action
+            android:id="@+id/action_issueListFragment_to_viewIssueFragment"
+            app:destination="@id/viewIssueFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewIssueFragment"
+        android:name="br.com.hillan.gitissues.ui.fragments.ViewIssueFragment"
+        android:label="ViewIssueFragment"
+        tools:layout="@layout/fragment_view_issue">
+        <argument
+            android:name="issueId"
+            app:argType="long" />
+
+    </fragment>
+</navigation>

@@ -1,6 +1,5 @@
 package br.com.hillan.gitissues.repository
 
-
 import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
@@ -46,13 +45,7 @@ class IssueRepository(
     }
 
     val allIssuesFromDb: Flow<List<Issue>> = mIssueDao.getAll()
-
     val lastIssue: Flow<Issue> = mIssueDao.getLastIssue()
-
-
-
-
-
 
     fun getIssueByID(id: Long): LiveData<Issue> {
         return mIssueDao.findById(id)
@@ -75,5 +68,4 @@ class IssueRepository(
     suspend fun insertList(issues: List<Issue>) {
         mIssueDao.insertList(issues)
     }
-
 }
