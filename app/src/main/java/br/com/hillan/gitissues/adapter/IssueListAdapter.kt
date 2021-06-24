@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.hillan.gitissues.R
+import br.com.hillan.gitissues.databinding.IssueItemBinding
 import br.com.hillan.gitissues.models.Issue
 import java.text.Format
 import java.text.SimpleDateFormat
@@ -18,10 +19,18 @@ class IssueListAdapter(
 
 ) : RecyclerView.Adapter<IssueListAdapter.ViewHolder>() {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.issue_item, parent, false)
-        return ViewHolder(view)
+
+        return ViewHolder(
+            IssueItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
+
+//        val view = LayoutInflater.from(context).inflate(R.layout.issue_item, parent, false) use without biding
+//        return ViewHolder(view)                                                             use without biding
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -39,7 +48,7 @@ class IssueListAdapter(
         return issues.size
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(private val binding: IssueItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var issue: Issue
 
@@ -53,8 +62,11 @@ class IssueListAdapter(
 
         fun bindView(issue: Issue) {
             this.issue = issue
-            val title: TextView = itemView.findViewById(R.id.issue_item_title)
-            val state: TextView = itemView.findViewById(R.id.issue_item_state)
+//            val title: TextView = itemView.findViewById(R.id.issue_item_title) use without biding
+//            val state: TextView = itemView.findViewById(R.id.issue_item_state) use without biding
+
+            val title: TextView = binding.issueItemTitle
+            val state: TextView = binding.issueItemState
             title.text = issue.title
 
             val f: Format = SimpleDateFormat("dd/MM/yy")

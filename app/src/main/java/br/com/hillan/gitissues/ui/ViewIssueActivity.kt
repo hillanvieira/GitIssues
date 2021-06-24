@@ -6,6 +6,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import br.com.hillan.gitissues.IssueViewModel
 import br.com.hillan.gitissues.R
+import br.com.hillan.gitissues.databinding.ActivityMainBinding
+import br.com.hillan.gitissues.databinding.ActivityViewIssueBinding
 import br.com.hillan.gitissues.models.Issue
 import br.com.hillan.gitissues.viewmodel.IssueDetailViewModel
 import com.bumptech.glide.Glide
@@ -24,6 +26,7 @@ class ViewIssueActivity : AppCompatActivity() {
 
     //Lazy Inject ViewModel Koin
     private val mIssueDetailViewModel: IssueDetailViewModel by viewModel()
+    private lateinit var binding: ActivityViewIssueBinding
 
     private val issueId: Long by lazy {
         intent.getLongExtra("issueId", 0)
@@ -32,7 +35,10 @@ class ViewIssueActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_view_issue)
+        //setContentView(R.layout.activity_view_issue) sem binding
+        binding = ActivityViewIssueBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         setTitle("Issue details")
 
@@ -47,17 +53,22 @@ class ViewIssueActivity : AppCompatActivity() {
 
     private fun configureView(it: Issue) {
 
-        titleText = findViewById(R.id.view_issue_title)
-        bodyText  = findViewById(R.id.view_issue_body)
-        imageView = findViewById(R.id.avatar_imageview)
-        dateText  = findViewById(R.id.date_textView)
+//        titleText = findViewById(R.id.view_issue_title) sem binding
+//        bodyText  = findViewById(R.id.view_issue_body)  sem binding
+//        imageView = findViewById(R.id.avatar_imageview) sem binding
+//        dateText  = findViewById(R.id.date_textView)    sem binding
 
-        titleText.setText(it.title)
+        titleText = binding.viewIssueTitle
+        bodyText  = binding.viewIssueBody
+        imageView = binding.avatarImageview
+        dateText  = binding.dateTextView
+
+        titleText.text = it.title
 
 
         val f: Format = SimpleDateFormat("dd/MM/yy")
         val strDate: String = f.format(it.createdAt)
-        dateText.setText(strDate)
+        dateText.text = strDate
 
         bodyText.setMarkDownText(it.body)
 
