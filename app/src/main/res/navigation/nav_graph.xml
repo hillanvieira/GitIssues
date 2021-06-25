@@ -12,7 +12,7 @@
         android:label="IssueListFragment"
         tools:layout="@layout/fragment_issue_list">
         <action
-            android:id="@+id/action_issueListFragment_to_viewIssueFragment"
+            android:id="@+id/ShowDetails"
             app:destination="@id/viewIssueFragment" />
     </fragment>
     <fragment
@@ -23,6 +23,5 @@
         <argument
             android:name="issueId"
             app:argType="long" />
-
     </fragment>
 </navigation>

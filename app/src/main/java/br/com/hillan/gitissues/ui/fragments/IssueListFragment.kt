@@ -1,6 +1,5 @@
 package br.com.hillan.gitissues.ui.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,13 +10,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.hillan.gitissues.IssueViewModel
-import br.com.hillan.gitissues.R
 import br.com.hillan.gitissues.adapter.IssueListAdapter
 import br.com.hillan.gitissues.databinding.FragmentIssueListBinding
-import br.com.hillan.gitissues.databinding.IssueItemBinding
 import br.com.hillan.gitissues.models.Issue
-import br.com.hillan.gitissues.ui.MainActivity
-import kotlinx.coroutines.NonDisposableHandle.parent
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class IssueListFragment() : Fragment() {
@@ -47,12 +42,6 @@ class IssueListFragment() : Fragment() {
 
     }
 
-
-//    private val issueClickCallback = ProductClickCallback { product ->
-//        val directions = ProductListDirections.navigateToProductDetail(product.id)
-//        findNavController().navigate(directions)
-//    }
-
     private fun configureRecyclerView(adapter: IssueListAdapter) {
 
         val recyclerView: RecyclerView = binding.issueList
@@ -69,9 +58,9 @@ class IssueListFragment() : Fragment() {
     private fun openIssueViewFragment(it: Issue) {
 
         val directions =
-            IssueListFragmentDirections.actionIssueListFragmentToViewIssueFragment(it.id!!)
-              Log.i("ISSUE_ID", "${it.id}")
-              findNavController().navigate(directions)
+            IssueListFragmentDirections.showDetails(it.id!!)
+        Log.i("ISSUE_ID", "${it.id}")
+        findNavController().navigate(directions)
     }
 
 }
