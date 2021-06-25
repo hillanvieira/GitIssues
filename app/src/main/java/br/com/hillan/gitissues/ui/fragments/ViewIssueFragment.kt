@@ -2,6 +2,7 @@ package br.com.hillan.gitissues.ui.fragments
 
 import java.text.Format
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -18,10 +19,12 @@ import br.com.hillan.gitissues.IssueViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import br.com.hillan.gitissues.databinding.FragmentViewIssueBinding
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class ViewIssueFragment : Fragment() {
 
-    private val mIssueDetailViewModel: IssueViewModel by viewModel()
+    //private val mIssueViewModel: IssueViewModel by viewModel()
+    private val mIssueViewModel: IssueViewModel by sharedViewModel<IssueViewModel>()
     private lateinit var binding: FragmentViewIssueBinding
 
     private lateinit var titleText: TextView
@@ -47,8 +50,9 @@ class ViewIssueFragment : Fragment() {
 
         issueIdByArgs = args.issueId
 
+        Log.i("INSTANCE", "$mIssueViewModel")
         // mIssueViewModel = ViewModelProvider.AndroidViewModelFactory(getApplication()).create(IssueViewModel::class.java)
-        mIssueDetailViewModel.getIssue(issueIdByArgs).observe(viewLifecycleOwner, {
+        mIssueViewModel.getIssue(issueIdByArgs).observe(viewLifecycleOwner, {
 
             if (it != null) {
                 configureView(it)

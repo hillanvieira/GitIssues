@@ -10,16 +10,18 @@ import br.com.hillan.gitissues.models.Issue
 import br.com.hillan.gitissues.IssueViewModel
 import androidx.recyclerview.widget.RecyclerView
 import androidx.navigation.fragment.findNavController
-import org.koin.android.viewmodel.ext.android.viewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.hillan.gitissues.adapter.IssueListAdapter
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 import br.com.hillan.gitissues.databinding.FragmentIssueListBinding
 
 class IssueListFragment() : Fragment() {
 
     //Lazy Inject ViewModel Koin
-    private val mIssueViewModel: IssueViewModel by viewModel()
+    //private val mIssueViewModel: IssueViewModel by viewModel()
+    private val mIssueViewModel: IssueViewModel by sharedViewModel<IssueViewModel>()
     private lateinit var binding: FragmentIssueListBinding
+
 
     // View initialization logic
     override fun onCreateView(
@@ -34,6 +36,7 @@ class IssueListFragment() : Fragment() {
     // Post view initialization logic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        Log.i("INSTANCE", "$mIssueViewModel")
         mIssueViewModel.allIssues.observe(viewLifecycleOwner, {
             if (it != null) {
                 configureRecyclerView(IssueListAdapter(it, requireActivity()))
