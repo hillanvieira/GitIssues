@@ -11,8 +11,9 @@
         android:name="br.com.hillan.gitissues.ui.fragments.IssueListFragment"
         android:label="IssueListFragment"
         tools:layout="@layout/fragment_issue_list">
+
         <action
-            android:id="@+id/ShowDetails"
+            android:id="@+id/show_details"
             app:destination="@id/viewIssueFragment" />
     </fragment>
     <fragment

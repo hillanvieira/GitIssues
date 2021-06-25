@@ -1,17 +1,17 @@
 package br.com.hillan.gitissues.repository
 
+import retrofit2.Call
 import android.util.Log
-import androidx.annotation.WorkerThread
+import retrofit2.Callback
+import retrofit2.Response
+import kotlinx.coroutines.launch
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.GlobalScope
+import androidx.annotation.WorkerThread
 import br.com.hillan.gitissues.dao.IssueDao
 import br.com.hillan.gitissues.models.Issue
 import br.com.hillan.gitissues.services.IssueService
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class IssueRepository(
     private val mIssueDao: IssueDao,

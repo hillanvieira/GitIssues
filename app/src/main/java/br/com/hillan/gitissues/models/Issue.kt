@@ -1,10 +1,10 @@
 package br.com.hillan.gitissues.models
 
-import androidx.room.ColumnInfo
+import java.util.*
 import androidx.room.Entity
+import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-import java.util.*
 
 @Entity
 data class Issue(
@@ -36,4 +36,4 @@ data class User(
     @SerializedName("avatar_url")
     @ColumnInfo(name = "avatar_url")
     val avatarUrl: String
-    )
+)

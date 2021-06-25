@@ -7,9 +7,8 @@ const val BASE_URL_GITISSUE = "https://api.github.com/repos/androiddevbr/vagas/"
 
 class RetrofitInitializer {
 
-    fun provideRetrofit() : Retrofit
-    {
-       return Retrofit.Builder()
+    fun provideRetrofit(): Retrofit {
+        return Retrofit.Builder()
             .baseUrl(BASE_URL_GITISSUE)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

@@ -1,27 +1,24 @@
 package br.com.hillan.gitissues.services
 
-import android.app.NotificationManager
-import android.app.PendingIntent.getActivity
-import android.content.Context
-import android.content.Context.NOTIFICATION_SERVICE
-import android.content.Intent
-import android.content.SharedPreferences
 import android.util.Log
-import androidx.core.app.NotificationCompat
 import androidx.work.Worker
-import androidx.work.WorkerParameters
-import br.com.hillan.gitissues.R
-import br.com.hillan.gitissues.repository.IssueRepository
-import br.com.hillan.gitissues.ui.MainActivity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import android.content.Intent
+import android.content.Context
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.single
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
-import org.koin.standalone.KoinComponent
+import br.com.hillan.gitissues.R
 import org.koin.standalone.inject
+import androidx.work.WorkerParameters
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Dispatchers
+import android.app.NotificationManager
+import android.content.SharedPreferences
+import org.koin.standalone.KoinComponent
+import androidx.core.app.NotificationCompat
+import android.app.PendingIntent.getActivity
+import br.com.hillan.gitissues.ui.MainActivity
+import android.content.Context.NOTIFICATION_SERVICE
+import br.com.hillan.gitissues.repository.IssueRepository
 
 
 class UpdateListWorker(context: Context, workerParams: WorkerParameters) :
@@ -50,7 +47,7 @@ class UpdateListWorker(context: Context, workerParams: WorkerParameters) :
             if (oldLastIssue != newLastIssue) {
                 sendNotification(newLastIssue)
                 Log.i("WORK_NOTIFICATION", "NOTIFYING")
-            }else{
+            } else {
                 Log.i("WORK_NOTIFICATION", "NOT_NOTIFY")
             }
             sharedpreferences.edit().putString("lastIssueTitle", newLastIssue).apply()

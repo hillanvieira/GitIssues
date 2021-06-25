@@ -1,10 +1,10 @@
 package br.com.hillan.gitissues.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import androidx.room.OnConflictStrategy.REPLACE
-import br.com.hillan.gitissues.models.Issue
+import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
+import br.com.hillan.gitissues.models.Issue
+import androidx.room.OnConflictStrategy.REPLACE
 
 @Dao
 interface IssueDao {

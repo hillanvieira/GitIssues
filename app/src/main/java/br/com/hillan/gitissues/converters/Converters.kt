@@ -1,12 +1,11 @@
 package br.com.hillan.gitissues.converters
 
-import androidx.room.TypeConverter
-import br.com.hillan.gitissues.models.IssueState
-
-import br.com.hillan.gitissues.models.User
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import java.util.*
+import com.google.gson.Gson
+import androidx.room.TypeConverter
+import com.google.gson.reflect.TypeToken
+import br.com.hillan.gitissues.models.User
+import br.com.hillan.gitissues.models.IssueState
 
 class Converters {
 

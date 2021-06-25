@@ -1,17 +1,14 @@
 package br.com.hillan.gitissues
 
-import android.app.Application
-import android.util.Log
-import androidx.lifecycle.*
 import androidx.work.*
-import br.com.hillan.gitissues.models.Issue
-import br.com.hillan.gitissues.repository.IssueRepository
-import br.com.hillan.gitissues.services.UpdateListWorker
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import androidx.lifecycle.*
+import android.app.Application
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.Dispatchers
+import br.com.hillan.gitissues.models.Issue
+import br.com.hillan.gitissues.services.UpdateListWorker
+import br.com.hillan.gitissues.repository.IssueRepository
 
 class IssueViewModel(
     private val application: Application,

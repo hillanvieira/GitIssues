@@ -1,17 +1,17 @@
 package br.com.hillan.gitissues
 
+import org.junit.Test
+import org.mockito.Mockito
+import org.koin.test.KoinTest
 import android.content.Context
+import kotlin.concurrent.thread
+import org.koin.dsl.module.module
+import org.koin.standalone.inject
+import org.koin.android.ext.koin.with
+import org.koin.standalone.StandAloneContext
 import br.com.hillan.gitissues.database.GitIssuesDatabase
 import br.com.hillan.gitissues.repository.IssueRepository
 import br.com.hillan.gitissues.services.RetrofitInitializer
-import org.junit.Test
-import org.koin.android.ext.koin.with
-import org.koin.dsl.module.module
-import org.koin.standalone.StandAloneContext
-import org.koin.standalone.inject
-import org.koin.test.KoinTest
-import org.mockito.Mockito
-import kotlin.concurrent.thread
 
 
 class DatabaseTest : KoinTest {
@@ -36,7 +36,7 @@ class DatabaseTest : KoinTest {
         StandAloneContext.startKoin(listOf(appModule)) with (Mockito.mock(Context::class.java))
         repeat(10) {
             thread(start = true) {
-                println(dbInstace)
+                println(repositoryInstance)
             }
         }
         Thread.sleep(500)

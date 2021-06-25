@@ -1,14 +1,14 @@
 package br.com.hillan.gitissues.adapter
 
-import android.content.Context
-import android.view.LayoutInflater
+import java.text.Format
 import android.view.ViewGroup
 import android.widget.TextView
+import android.content.Context
+import java.text.SimpleDateFormat
+import android.view.LayoutInflater
+import br.com.hillan.gitissues.models.Issue
 import androidx.recyclerview.widget.RecyclerView
 import br.com.hillan.gitissues.databinding.IssueItemBinding
-import br.com.hillan.gitissues.models.Issue
-import java.text.Format
-import java.text.SimpleDateFormat
 
 class IssueListAdapter(
     private val issues: List<Issue>,
@@ -46,7 +46,8 @@ class IssueListAdapter(
         return issues.size
     }
 
-    inner class ViewHolder(private val binding: IssueItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: IssueItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var issue: Issue
 

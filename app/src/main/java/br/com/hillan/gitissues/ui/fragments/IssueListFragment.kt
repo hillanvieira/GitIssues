@@ -1,19 +1,19 @@
 package br.com.hillan.gitissues.ui.fragments
 
-import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
+import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import br.com.hillan.gitissues.models.Issue
 import br.com.hillan.gitissues.IssueViewModel
+import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.fragment.findNavController
+import org.koin.android.viewmodel.ext.android.viewModel
+import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.hillan.gitissues.adapter.IssueListAdapter
 import br.com.hillan.gitissues.databinding.FragmentIssueListBinding
-import br.com.hillan.gitissues.models.Issue
-import org.koin.android.viewmodel.ext.android.viewModel
 
 class IssueListFragment() : Fragment() {
 

@@ -1,19 +1,19 @@
 package br.com.hillan.gitissues.application
 
+import android.os.Build
 import android.app.Application
+import android.content.Context
+import org.koin.dsl.module.module
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context
 import android.content.res.Configuration
-import android.os.Build
 import br.com.hillan.gitissues.IssueViewModel
-import br.com.hillan.gitissues.database.GitIssuesDatabase
-import br.com.hillan.gitissues.repository.IssueRepository
-import br.com.hillan.gitissues.services.RetrofitInitializer
 import org.koin.android.ext.android.startKoin
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.viewmodel.ext.koin.viewModel
-import org.koin.dsl.module.module
+import br.com.hillan.gitissues.repository.IssueRepository
+import br.com.hillan.gitissues.database.GitIssuesDatabase
+import br.com.hillan.gitissues.services.RetrofitInitializer
 
 class GitIssuesApplication : Application() {
 
@@ -33,7 +33,7 @@ class GitIssuesApplication : Application() {
         }
 
         //koin viewModel
-        viewModel { IssueViewModel(this.androidApplication() ,get()) }
+        viewModel { IssueViewModel(this.androidApplication(), get()) }
 
     }
 
