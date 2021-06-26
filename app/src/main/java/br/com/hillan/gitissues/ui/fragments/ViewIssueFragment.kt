@@ -19,6 +19,7 @@ import br.com.hillan.gitissues.IssueViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import br.com.hillan.gitissues.databinding.FragmentViewIssueBinding
+import br.com.hillan.gitissues.ui.MainActivity
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class ViewIssueFragment : Fragment() {
@@ -40,6 +41,9 @@ class ViewIssueFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if(activity is MainActivity){
+            (activity as MainActivity?)?.title = "Issues"
+        }
         binding = FragmentViewIssueBinding.inflate(inflater, container, false)
         return binding.root
     }

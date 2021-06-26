@@ -21,4 +21,7 @@ class ExampleInstrumentedTest {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("br.com.hillan.gitissues", appContext.packageName)
     }
+
+
+
 }

@@ -1,19 +1,20 @@
 package br.com.hillan.gitissues.ui.fragments
 
-import android.util.Log
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
-import br.com.hillan.gitissues.models.Issue
-import br.com.hillan.gitissues.IssueViewModel
-import androidx.recyclerview.widget.RecyclerView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import br.com.hillan.gitissues.IssueViewModel
 import br.com.hillan.gitissues.adapter.IssueListAdapter
-import org.koin.android.viewmodel.ext.android.sharedViewModel
 import br.com.hillan.gitissues.databinding.FragmentIssueListBinding
+import br.com.hillan.gitissues.models.Issue
+import br.com.hillan.gitissues.ui.MainActivity
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class IssueListFragment() : Fragment() {
 
@@ -22,13 +23,15 @@ class IssueListFragment() : Fragment() {
     private val mIssueViewModel: IssueViewModel by sharedViewModel<IssueViewModel>()
     private lateinit var binding: FragmentIssueListBinding
 
-
     // View initialization logic
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if(activity is MainActivity){
+            (activity as MainActivity?)?.title = "Issues List"
+        }
         binding = FragmentIssueListBinding.inflate(inflater, container, false)
         return binding.root
     }
