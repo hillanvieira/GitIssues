@@ -19,6 +19,11 @@ class IssueViewModel(
     var allIssues: MutableLiveData<List<Issue>> =
         mRepository.allIssuesFromDb.asLiveData() as MutableLiveData<List<Issue>>
 
+    val idInput = MutableLiveData<Long>()
+    val issueById: LiveData<Issue> = Transformations.switchMap(idInput) {
+        it -> mRepository.getIssueByID(it)
+    }
+
     init {
 
         //testes with coroutines

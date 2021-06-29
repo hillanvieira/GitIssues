@@ -34,7 +34,7 @@ class ViewIssueFragment : Fragment() {
     private lateinit var imageView: ImageView
     private var issueIdByArgs: Long = 0
 
-    private val args: ViewIssueFragmentArgs by navArgs()
+   // private val args: ViewIssueFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,20 +48,21 @@ class ViewIssueFragment : Fragment() {
         return binding.root
     }
 
-
     // Post view initialization logic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        issueIdByArgs = args.issueId
+    // issueIdByArgs = args.issueId
 
-        Log.i("INSTANCE", "$mIssueViewModel")
-        // mIssueViewModel = ViewModelProvider.AndroidViewModelFactory(getApplication()).create(IssueViewModel::class.java)
-        mIssueViewModel.getIssue(issueIdByArgs).observe(viewLifecycleOwner, {
+//        mIssueViewModel.getIssue(issueIdByArgs).observe(viewLifecycleOwner, {
+//            if (it != null) {
+//                configureView(it)
+//            }
+//        })
 
+        mIssueViewModel.issueById.observe(viewLifecycleOwner, {
             if (it != null) {
                 configureView(it)
             }
-
         })
 
     }

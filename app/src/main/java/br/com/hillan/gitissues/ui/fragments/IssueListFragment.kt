@@ -1,5 +1,7 @@
 package br.com.hillan.gitissues.ui.fragments
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,10 +20,19 @@ import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class IssueListFragment() : Fragment() {
 
-    //Lazy Inject ViewModel Koin
-    //private val mIssueViewModel: IssueViewModel by viewModel()
     private val mIssueViewModel: IssueViewModel by sharedViewModel<IssueViewModel>()
     private lateinit var binding: FragmentIssueListBinding
+
+    private val orientation:Int
+        get() {
+            return when(resources.configuration.orientation){
+                Configuration.ORIENTATION_PORTRAIT -> Configuration.ORIENTATION_PORTRAIT
+                Configuration.ORIENTATION_LANDSCAPE -> Configuration.ORIENTATION_LANDSCAPE
+                Configuration.ORIENTATION_UNDEFINED -> Configuration.ORIENTATION_UNDEFINED
+                else -> Configuration.ORIENTATION_PORTRAIT
+            }
+        }
+
 
     // View initialization logic
     override fun onCreateView(
@@ -43,6 +54,8 @@ class IssueListFragment() : Fragment() {
         mIssueViewModel.allIssues.observe(viewLifecycleOwner, {
             if (it != null) {
                 configureRecyclerView(IssueListAdapter(it, requireActivity()))
+
+                mIssueViewModel.idInput.value = it.last().id
             }
         })
 
@@ -61,12 +74,27 @@ class IssueListFragment() : Fragment() {
         recyclerView.layoutManager = layoutManager
     }
 
+
     private fun openIssueViewFragment(it: Issue) {
 
-        val directions =
-            IssueListFragmentDirections.showDetails(it.id!!)
-        Log.i("ISSUE_ID", "${it.id}")
+        mIssueViewModel.idInput.value = it.id
+
+        if(orientation == Configuration.ORIENTATION_PORTRAIT ){
+            val directions =
+            IssueListFragmentDirections.showDetails()
         findNavController().navigate(directions)
+
+        }
+
+
+
+//        val directions =
+//            IssueListFragmentDirections.showDetails(it.id!!)
+//        Log.i("ISSUE_ID", "${it.id}")
+//        findNavController().navigate(directions)
+
     }
+
+
 
 }

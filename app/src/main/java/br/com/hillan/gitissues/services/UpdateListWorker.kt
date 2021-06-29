@@ -24,6 +24,7 @@ import br.com.hillan.gitissues.repository.IssueRepository
 class UpdateListWorker(context: Context, workerParams: WorkerParameters) :
     Worker(context, workerParams), KoinComponent {
 
+    
     val repository: IssueRepository by inject()
 
     var sharedpreferences: SharedPreferences =

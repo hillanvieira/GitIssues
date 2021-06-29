@@ -7,6 +7,7 @@ import org.koin.dsl.module.module
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.res.Configuration
+import android.util.Log
 import br.com.hillan.gitissues.IssueViewModel
 import org.koin.android.ext.android.startKoin
 import org.koin.android.ext.koin.androidApplication
