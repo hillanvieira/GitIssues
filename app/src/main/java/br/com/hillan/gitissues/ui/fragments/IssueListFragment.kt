@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -52,10 +54,16 @@ class IssueListFragment() : Fragment() {
 
         Log.i("INSTANCE", "$mIssueViewModel")
         mIssueViewModel.allIssues.observe(viewLifecycleOwner, {
-            if (it != null) {
-                configureRecyclerView(IssueListAdapter(it, requireActivity()))
+            if (it != null ) {
+                if(it.isNotEmpty()){
+                    print(it)
+                    configureRecyclerView(IssueListAdapter(it, requireActivity()))
+                    mIssueViewModel.idInput.value = it.last().id
+                    binding.errorMessage.visibility =  INVISIBLE
+                }else{
+                    binding.errorMessage.visibility =  VISIBLE
+                }
 
-                mIssueViewModel.idInput.value = it.last().id
             }
         })
 
