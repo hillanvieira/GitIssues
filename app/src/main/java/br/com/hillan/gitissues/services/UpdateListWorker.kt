@@ -18,6 +18,7 @@ import androidx.core.app.NotificationCompat
 import android.app.PendingIntent.getActivity
 import br.com.hillan.gitissues.ui.MainActivity
 import android.content.Context.NOTIFICATION_SERVICE
+import androidx.navigation.NavDeepLinkBuilder
 import br.com.hillan.gitissues.repository.IssueRepository
 
 
@@ -65,7 +66,15 @@ class UpdateListWorker(context: Context, workerParams: WorkerParameters) :
         val notificationManager =
             applicationContext.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
-        val pendingIntent = getActivity(applicationContext, 0, intent, 0)
+        //To start an activity
+        // val pendingIntent = getActivity(applicationContext, 0, intent, 0)
+
+        //to start an fragment
+        val pendingIntent = NavDeepLinkBuilder(applicationContext)
+            .setComponentName(MainActivity::class.java)
+            .setGraph(R.navigation.nav_graph)
+            .setDestination(R.id.issueListFragment)
+            .createPendingIntent()
 
         val notificationBuilder = NotificationCompat.Builder(applicationContext, "GITISS01")
             .setSmallIcon(R.drawable.notification_icon)
