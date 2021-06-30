@@ -1,5 +1,6 @@
 # GitIssues
-<img src="app.png" alt="app screen" style="width:360px;"/>
+<img src="app.png" alt="app screen"  height="600"/>   
+ 
 
 ## App Android em Kotlin para testar ferramentas como:
 * Koin                 (injeção de dependencia)
