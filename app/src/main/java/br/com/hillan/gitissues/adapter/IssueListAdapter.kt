@@ -6,9 +6,14 @@ import android.widget.TextView
 import android.content.Context
 import java.text.SimpleDateFormat
 import android.view.LayoutInflater
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import br.com.hillan.gitissues.models.Issue
 import androidx.recyclerview.widget.RecyclerView
 import br.com.hillan.gitissues.databinding.IssueItemBinding
+import kotlin.properties.Delegates
 
 class IssueListAdapter(
     private val issues: List<Issue>,
@@ -16,6 +21,10 @@ class IssueListAdapter(
     var whenClicked: (issue: Issue) -> Unit = {}
 
 ) : RecyclerView.Adapter<IssueListAdapter.ViewHolder>() {
+
+    var cardExpanded: CardView = CardView(context)
+    lateinit var cardExpandedSelected: CardView
+    var hasCardExpanded = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -51,10 +60,31 @@ class IssueListAdapter(
 
         private lateinit var issue: Issue
 
+        val card: CardView = binding.issueCard
+        val cardSelected: CardView = binding.issueCardSelected
+
         init {
             itemView.setOnClickListener {
-                if (::issue.isInitialized) {
-                    whenClicked(issue)
+
+                if (card != cardExpanded) {
+
+                    if (::issue.isInitialized) {
+                        whenClicked(issue)
+                    }
+
+                    cardSelected.visibility = VISIBLE
+                    card.visibility = GONE
+
+                    if (hasCardExpanded) {
+                        cardExpandedSelected.visibility = GONE
+                        cardExpanded.visibility = VISIBLE
+                    }
+
+                    cardExpandedSelected = cardSelected
+                    cardExpanded = card
+
+                    hasCardExpanded = true
+
                 }
             }
         }
@@ -66,13 +96,17 @@ class IssueListAdapter(
 
             val title: TextView = binding.issueItemTitle
             val state: TextView = binding.issueItemState
+            val stateSelected: TextView = binding.issueItemStateSelected
+            val titleSelected: TextView = binding.issueItemTitleSelected
+
             title.text = issue.title
+            titleSelected.text = issue.title
 
             val f: Format = SimpleDateFormat("dd/MM/yy")
             val strDate: String = f.format(issue.createdAt)
             state.text = "${issue.state} $strDate"
+            stateSelected.text = "${issue.state} $strDate"
         }
-
     }
 }
 

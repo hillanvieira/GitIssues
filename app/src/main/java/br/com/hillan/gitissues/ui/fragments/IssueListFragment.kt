@@ -35,7 +35,6 @@ class IssueListFragment() : Fragment() {
             }
         }
 
-
     // View initialization logic
     override fun onCreateView(
         inflater: LayoutInflater,
