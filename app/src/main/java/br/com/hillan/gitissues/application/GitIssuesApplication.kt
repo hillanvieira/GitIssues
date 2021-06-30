@@ -34,7 +34,7 @@ class GitIssuesApplication : Application() {
         }
 
         //koin viewModel
-        viewModel { IssueViewModel(this.androidApplication(), get()) }
+        viewModel { IssueViewModel(get(),this.androidApplication()) }
 
     }
 

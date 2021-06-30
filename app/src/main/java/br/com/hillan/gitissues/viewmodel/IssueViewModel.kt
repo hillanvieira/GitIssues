@@ -11,9 +11,8 @@ import br.com.hillan.gitissues.services.UpdateListWorker
 import br.com.hillan.gitissues.repository.IssueRepository
 
 class IssueViewModel(
-    private val application: Application,
-    private val mRepository: IssueRepository
-) : ViewModel() {
+    private val  mRepository: IssueRepository, application: Application
+) : AndroidViewModel(application) {
 
     //convert flow to MutableLiveData
     var allIssues: MutableLiveData<List<Issue>> =
