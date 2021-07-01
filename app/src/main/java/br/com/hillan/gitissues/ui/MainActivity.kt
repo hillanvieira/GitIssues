@@ -3,7 +3,7 @@ package br.com.hillan.gitissues.ui
 import android.os.Bundle
 import br.com.hillan.gitissues.R
 import androidx.appcompat.app.AppCompatActivity
-import br.com.hillan.gitissues.IssueViewModel
+import br.com.hillan.gitissues.viewmodel.IssueViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {

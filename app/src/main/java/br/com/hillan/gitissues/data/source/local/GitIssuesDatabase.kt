@@ -1,4 +1,4 @@
-package br.com.hillan.gitissues.database
+package br.com.hillan.gitissues.data.source.local
 
 import androidx.room.Room
 import androidx.room.Database
@@ -6,9 +6,8 @@ import android.content.Context
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import java.util.concurrent.Executors
-import br.com.hillan.gitissues.dao.IssueDao
-import br.com.hillan.gitissues.models.Issue
-import br.com.hillan.gitissues.converters.Converters
+import br.com.hillan.gitissues.data.models.Issue
+import br.com.hillan.gitissues.data.converters.Converters
 
 private const val DATABASE_NAME = "issues.db"
 

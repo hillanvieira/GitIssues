@@ -1,4 +1,4 @@
-package br.com.hillan.gitissues.repository
+package br.com.hillan.gitissues.data.source
 
 import retrofit2.Call
 import android.util.Log
@@ -9,9 +9,9 @@ import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.GlobalScope
 import androidx.annotation.WorkerThread
-import br.com.hillan.gitissues.dao.IssueDao
-import br.com.hillan.gitissues.models.Issue
-import br.com.hillan.gitissues.services.IssueService
+import br.com.hillan.gitissues.data.source.local.IssueDao
+import br.com.hillan.gitissues.data.models.Issue
+import br.com.hillan.gitissues.data.source.remote.IssueService
 
 class IssueRepository(
     private val mIssueDao: IssueDao,

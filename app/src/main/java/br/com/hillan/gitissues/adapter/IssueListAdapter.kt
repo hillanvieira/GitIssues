@@ -9,11 +9,9 @@ import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
-import br.com.hillan.gitissues.models.Issue
+import br.com.hillan.gitissues.data.models.Issue
 import androidx.recyclerview.widget.RecyclerView
 import br.com.hillan.gitissues.databinding.IssueItemBinding
-import kotlin.properties.Delegates
 
 class IssueListAdapter(
     private val issues: List<Issue>,

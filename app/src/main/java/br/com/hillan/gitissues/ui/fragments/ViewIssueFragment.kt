@@ -2,7 +2,6 @@ package br.com.hillan.gitissues.ui.fragments
 
 import java.text.Format
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -13,10 +12,8 @@ import br.com.hillan.gitissues.R
 import java.text.SimpleDateFormat
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.navArgs
-import br.com.hillan.gitissues.models.Issue
-import br.com.hillan.gitissues.IssueViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
+import br.com.hillan.gitissues.data.models.Issue
+import br.com.hillan.gitissues.viewmodel.IssueViewModel
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import br.com.hillan.gitissues.databinding.FragmentViewIssueBinding
 import br.com.hillan.gitissues.ui.MainActivity

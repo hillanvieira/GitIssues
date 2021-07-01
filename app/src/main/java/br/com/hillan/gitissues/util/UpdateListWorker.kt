@@ -1,4 +1,4 @@
-package br.com.hillan.gitissues.services
+package br.com.hillan.gitissues.util
 
 import android.util.Log
 import androidx.work.Worker
@@ -15,11 +15,10 @@ import android.app.NotificationManager
 import android.content.SharedPreferences
 import org.koin.standalone.KoinComponent
 import androidx.core.app.NotificationCompat
-import android.app.PendingIntent.getActivity
 import br.com.hillan.gitissues.ui.MainActivity
 import android.content.Context.NOTIFICATION_SERVICE
 import androidx.navigation.NavDeepLinkBuilder
-import br.com.hillan.gitissues.repository.IssueRepository
+import br.com.hillan.gitissues.data.source.IssueRepository
 
 
 class UpdateListWorker(context: Context, workerParams: WorkerParameters) :

@@ -1,9 +1,9 @@
-package br.com.hillan.gitissues.dao
+package br.com.hillan.gitissues.data.source.local
 
 import androidx.room.*
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
-import br.com.hillan.gitissues.models.Issue
+import br.com.hillan.gitissues.data.models.Issue
 import androidx.room.OnConflictStrategy.REPLACE
 
 @Dao

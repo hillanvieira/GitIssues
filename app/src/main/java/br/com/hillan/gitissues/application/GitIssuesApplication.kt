@@ -7,14 +7,14 @@ import org.koin.dsl.module.module
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.res.Configuration
-import android.util.Log
-import br.com.hillan.gitissues.IssueViewModel
+import br.com.hillan.gitissues.viewmodel.IssueViewModel
 import org.koin.android.ext.android.startKoin
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.viewmodel.ext.koin.viewModel
-import br.com.hillan.gitissues.repository.IssueRepository
-import br.com.hillan.gitissues.database.GitIssuesDatabase
-import br.com.hillan.gitissues.services.RetrofitInitializer
+import br.com.hillan.gitissues.data.source.IssueRepository
+import br.com.hillan.gitissues.data.source.local.GitIssuesDatabase
+import br.com.hillan.gitissues.data.source.remote.RetrofitInitializer
+
 
 class GitIssuesApplication : Application() {
 

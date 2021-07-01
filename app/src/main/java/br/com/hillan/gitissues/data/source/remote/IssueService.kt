@@ -1,8 +1,8 @@
-package br.com.hillan.gitissues.services
+package br.com.hillan.gitissues.data.source.remote
 
 import retrofit2.Call
 import retrofit2.http.GET
-import br.com.hillan.gitissues.models.Issue
+import br.com.hillan.gitissues.data.models.Issue
 
 interface IssueService {
 

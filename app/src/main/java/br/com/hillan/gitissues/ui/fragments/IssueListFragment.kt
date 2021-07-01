@@ -1,6 +1,5 @@
 package br.com.hillan.gitissues.ui.fragments
 
-import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -13,10 +12,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import br.com.hillan.gitissues.IssueViewModel
+import br.com.hillan.gitissues.viewmodel.IssueViewModel
 import br.com.hillan.gitissues.adapter.IssueListAdapter
 import br.com.hillan.gitissues.databinding.FragmentIssueListBinding
-import br.com.hillan.gitissues.models.Issue
+import br.com.hillan.gitissues.data.models.Issue
 import br.com.hillan.gitissues.ui.MainActivity
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 

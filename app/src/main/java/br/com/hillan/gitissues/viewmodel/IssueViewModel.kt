@@ -1,4 +1,4 @@
-package br.com.hillan.gitissues
+package br.com.hillan.gitissues.viewmodel
 
 import androidx.work.*
 import androidx.lifecycle.*
@@ -6,9 +6,9 @@ import android.app.Application
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.Dispatchers
-import br.com.hillan.gitissues.models.Issue
-import br.com.hillan.gitissues.services.UpdateListWorker
-import br.com.hillan.gitissues.repository.IssueRepository
+import br.com.hillan.gitissues.data.models.Issue
+import br.com.hillan.gitissues.util.UpdateListWorker
+import br.com.hillan.gitissues.data.source.IssueRepository
 
 class IssueViewModel(
     private val  mRepository: IssueRepository, application: Application

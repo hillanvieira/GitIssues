@@ -1,5 +1,6 @@
-package br.com.hillan.gitissues.services
+package br.com.hillan.gitissues.data.source.remote
 
+import br.com.hillan.gitissues.data.source.remote.IssueService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

@@ -9,9 +9,9 @@ import org.koin.dsl.module.module
 import org.koin.standalone.inject
 import org.koin.android.ext.koin.with
 import org.koin.standalone.StandAloneContext
-import br.com.hillan.gitissues.database.GitIssuesDatabase
-import br.com.hillan.gitissues.repository.IssueRepository
-import br.com.hillan.gitissues.services.RetrofitInitializer
+import br.com.hillan.gitissues.data.source.database.GitIssuesDatabase
+import br.com.hillan.gitissues.data.source.IssueRepository
+import br.com.hillan.gitissues.data.source.services.RetrofitInitializer
 
 
 class DatabaseTest : KoinTest {
@@ -36,7 +36,7 @@ class DatabaseTest : KoinTest {
         StandAloneContext.startKoin(listOf(appModule)) with (Mockito.mock(Context::class.java))
         repeat(10) {
             thread(start = true) {
-                println(repositoryInstance)
+                println(dbInstace)
             }
         }
         Thread.sleep(500)

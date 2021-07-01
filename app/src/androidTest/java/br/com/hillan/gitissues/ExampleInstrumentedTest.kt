@@ -22,6 +22,4 @@ class ExampleInstrumentedTest {
         assertEquals("br.com.hillan.gitissues", appContext.packageName)
     }
 
-
-
 }
