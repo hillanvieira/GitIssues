@@ -80,7 +80,6 @@ class IssueListFragment() : Fragment() {
         recyclerView.layoutManager = layoutManager
     }
 
-
     private fun openIssueViewFragment(it: Issue) {
 
         mIssueViewModel.idInput.value = it.id
@@ -91,16 +90,11 @@ class IssueListFragment() : Fragment() {
         findNavController().navigate(directions)
 
         }
-
-
-
 //        val directions =
 //            IssueListFragmentDirections.showDetails(it.id!!)
 //        Log.i("ISSUE_ID", "${it.id}")
 //        findNavController().navigate(directions)
 
     }
-
-
 
 }

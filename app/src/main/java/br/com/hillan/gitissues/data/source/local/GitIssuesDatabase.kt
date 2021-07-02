@@ -5,7 +5,6 @@ import androidx.room.Database
 import android.content.Context
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import java.util.concurrent.Executors
 import br.com.hillan.gitissues.data.models.Issue
 import br.com.hillan.gitissues.data.converters.Converters
 
@@ -19,26 +18,19 @@ abstract class GitIssuesDatabase : RoomDatabase() {
     companion object {
         @Volatile
         private var INSTANCE: GitIssuesDatabase? = null
-        private const val NUMBER_OF_THREADS = 4
-        val databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS)
 
-
-        fun getInstance(context: Context): GitIssuesDatabase? {
-            if (INSTANCE == null) {
-                synchronized(GitIssuesDatabase::class.java) {
-                    if (INSTANCE == null) {
-
-                        INSTANCE = Room.databaseBuilder(
-                            context,
-                            GitIssuesDatabase::class.java,
-                            DATABASE_NAME
-                        ).build()
-                    }
+        fun getInstance(context: Context): GitIssuesDatabase {
+            return INSTANCE ?: synchronized(this) {
+                Room.databaseBuilder(
+                    context,
+                    GitIssuesDatabase::class.java,
+                    DATABASE_NAME
+                ).build().also {
+                    INSTANCE = it
                 }
             }
-            return INSTANCE
         }
-
     }
+
 }
 

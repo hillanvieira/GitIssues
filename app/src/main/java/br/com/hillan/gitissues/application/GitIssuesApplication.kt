@@ -6,14 +6,16 @@ import android.content.Context
 import org.koin.dsl.module.module
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.res.Configuration
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import br.com.hillan.gitissues.viewmodel.IssueViewModel
 import org.koin.android.ext.android.startKoin
-import org.koin.android.ext.koin.androidApplication
 import org.koin.android.viewmodel.ext.koin.viewModel
-import br.com.hillan.gitissues.data.source.IssueRepository
 import br.com.hillan.gitissues.data.source.local.GitIssuesDatabase
-import br.com.hillan.gitissues.data.source.remote.RetrofitInitializer
+import br.com.hillan.gitissues.util.UpdateListWorker
+import java.util.concurrent.TimeUnit
 
 
 class GitIssuesApplication : Application() {
@@ -22,19 +24,12 @@ class GitIssuesApplication : Application() {
     private val appModule = module {
 
         //koin single each injection will use the same instance
-        single { GitIssuesDatabase.getInstance(applicationContext)!! }
-        single { RetrofitInitializer().provideRetrofit() }
+        single { GitIssuesDatabase.getInstance(applicationContext) } //notUsed
 
         //koin factory will create a new instance each time the component is injected
-        factory {
-            IssueRepository(
-                get<GitIssuesDatabase>().issueDao(),
-                RetrofitInitializer().issueService(get())
-            )
-        }
 
         //koin viewModel
-        viewModel { IssueViewModel(get(),this.androidApplication()) }
+        viewModel { IssueViewModel(get()) }
 
     }
 
@@ -55,7 +50,6 @@ class GitIssuesApplication : Application() {
         }
     }
 
-
     // Called when the application is starting, before any other application objects have been created.
     // Overriding this method is totally optional!
     override fun onCreate() {
@@ -64,22 +58,8 @@ class GitIssuesApplication : Application() {
         // Start Koin
         startKoin(this, listOf(appModule))
 
-        // Required initialization logic here!
         createNotificationChannel()
 
-    }
-
-    // Called by the system when the device configuration changes while your component is running.
-    // Overriding this method is totally optional!
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-    }
-
-    // This is called when the overall system is running low on memory,
-    // and would like actively running processes to tighten their belts.
-    // Overriding this method is totally optional!
-    override fun onLowMemory() {
-        super.onLowMemory()
     }
 
 }

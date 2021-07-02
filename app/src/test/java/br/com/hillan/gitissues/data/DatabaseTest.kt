@@ -1,4 +1,4 @@
-package br.com.hillan.gitissues
+package br.com.hillan.gitissues.data
 
 import org.junit.Test
 import org.mockito.Mockito
@@ -9,26 +9,16 @@ import org.koin.dsl.module.module
 import org.koin.standalone.inject
 import org.koin.android.ext.koin.with
 import org.koin.standalone.StandAloneContext
-import br.com.hillan.gitissues.data.source.database.GitIssuesDatabase
-import br.com.hillan.gitissues.data.source.IssueRepository
-import br.com.hillan.gitissues.data.source.services.RetrofitInitializer
+import br.com.hillan.gitissues.data.source.local.GitIssuesDatabase
 
 
 class DatabaseTest : KoinTest {
 
     val appModule = module {
-        single { GitIssuesDatabase.getInstance(Mockito.mock(Context::class.java))!! }
-        single  { RetrofitInitializer().provideRetrofit() }
-        factory {
-            IssueRepository(
-                get<GitIssuesDatabase>().issueDao(),
-                RetrofitInitializer().issueService(get())
-            )
-        }
+        single { GitIssuesDatabase.getInstance(Mockito.mock(Context::class.java)) }
     }
 
     private val dbInstace: GitIssuesDatabase by inject()
-    private val repositoryInstance: IssueRepository by inject()
 
 
     @Test

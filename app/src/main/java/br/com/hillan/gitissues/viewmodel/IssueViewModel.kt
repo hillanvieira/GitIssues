@@ -9,10 +9,13 @@ import kotlinx.coroutines.Dispatchers
 import br.com.hillan.gitissues.data.models.Issue
 import br.com.hillan.gitissues.util.UpdateListWorker
 import br.com.hillan.gitissues.data.source.IssueRepository
+import kotlinx.coroutines.CoroutineDispatcher
 
-class IssueViewModel(
-    private val  mRepository: IssueRepository, application: Application
-) : AndroidViewModel(application) {
+
+class IssueViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val mRepository: IssueRepository = IssueRepository(application)
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 
     //convert flow to MutableLiveData
     var allIssues: MutableLiveData<List<Issue>> =
@@ -33,8 +36,11 @@ class IssueViewModel(
 //            mRepository.allIssuesFromDb.collect { list -> allIssues.postValue(list) }
 //        }
 
-
         //Scheduler task with WorkManager PeriodicWorkRequestBuilder KEEP
+        setupWorkManager(application)
+    }
+
+    private fun setupWorkManager(application: Application) {
         val updateListWorker: PeriodicWorkRequest =
             PeriodicWorkRequestBuilder<UpdateListWorker>(
                 15,
@@ -52,11 +58,11 @@ class IssueViewModel(
         return mRepository.getIssueByID(id)
     }
 
-    fun insert(issue: Issue) = viewModelScope.launch(Dispatchers.IO) {
+    fun insert(issue: Issue) = viewModelScope.launch(ioDispatcher) {
         mRepository.insert(issue = issue)
     }
 
-    fun insertList(issues: List<Issue>) = viewModelScope.launch(Dispatchers.IO) {
+    fun insertList(issues: List<Issue>) = viewModelScope.launch(ioDispatcher) {
         mRepository.insertList(issues = issues)
     }
 

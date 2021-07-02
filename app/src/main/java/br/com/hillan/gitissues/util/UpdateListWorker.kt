@@ -1,5 +1,6 @@
 package br.com.hillan.gitissues.util
 
+import android.app.Application
 import android.util.Log
 import androidx.work.Worker
 import android.content.Intent
@@ -24,8 +25,8 @@ import br.com.hillan.gitissues.data.source.IssueRepository
 class UpdateListWorker(context: Context, workerParams: WorkerParameters) :
     Worker(context, workerParams), KoinComponent {
 
-    
-    val repository: IssueRepository by inject()
+    private val repository: IssueRepository = IssueRepository(context as Application)
+
 
     var sharedpreferences: SharedPreferences =
         applicationContext.getSharedPreferences("gitissues_preferences", Context.MODE_PRIVATE)
