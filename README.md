@@ -1,5 +1,5 @@
 # GitIssues
-<img src="app.png" alt="app screen"  height="600"/>   
+<img src="app.gif" alt="app screen"  height="240"/>   
  
 
 ## App Android em Kotlin para testar ferramentas como:
