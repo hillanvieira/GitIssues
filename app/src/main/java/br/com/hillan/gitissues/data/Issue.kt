@@ -11,6 +11,7 @@ data class Issue(
     @PrimaryKey
     val id: Long?,
 
+    @SerializedName("title")
     @ColumnInfo
     val title: String,
 
@@ -18,9 +19,11 @@ data class Issue(
     @ColumnInfo(name = "created_at")
     val createdAt: Date,
 
+    @SerializedName("body")
     @ColumnInfo
     val body: String,
 
+    @SerializedName("state")
     @ColumnInfo
     val state: String,
 
@@ -28,6 +31,7 @@ data class Issue(
     @ColumnInfo(name = "html_url")
     val htmlUrl: String,
 
+    @SerializedName("user")
     @ColumnInfo
     val user: User
 )

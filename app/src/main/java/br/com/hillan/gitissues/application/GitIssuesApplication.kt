@@ -3,35 +3,10 @@ package br.com.hillan.gitissues.application
 import android.os.Build
 import android.app.Application
 import android.content.Context
-import org.koin.dsl.module.module
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequest
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
-import br.com.hillan.gitissues.viewmodel.IssueViewModel
-import org.koin.android.ext.android.startKoin
-import org.koin.android.viewmodel.ext.koin.viewModel
-import br.com.hillan.gitissues.data.source.local.GitIssuesDatabase
-import br.com.hillan.gitissues.util.UpdateListWorker
-import java.util.concurrent.TimeUnit
-
 
 class GitIssuesApplication : Application() {
-
-    //Koin modules
-    private val appModule = module {
-
-        //koin single each injection will use the same instance
-        single { GitIssuesDatabase.getInstance(applicationContext) } //notUsed
-
-        //koin factory will create a new instance each time the component is injected
-
-        //koin viewModel
-        viewModel { IssueViewModel(get()) }
-
-    }
 
     private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
@@ -54,9 +29,6 @@ class GitIssuesApplication : Application() {
     // Overriding this method is totally optional!
     override fun onCreate() {
         super.onCreate()
-
-        // Start Koin
-        startKoin(this, listOf(appModule))
 
         createNotificationChannel()
 

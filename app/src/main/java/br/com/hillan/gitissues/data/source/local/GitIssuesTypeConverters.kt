@@ -1,13 +1,13 @@
-package br.com.hillan.gitissues.data.converters
+package br.com.hillan.gitissues.data.source.local
 
 import java.util.*
 import com.google.gson.Gson
 import androidx.room.TypeConverter
 import com.google.gson.reflect.TypeToken
 import br.com.hillan.gitissues.data.models.User
-import br.com.hillan.gitissues.data.models.IssueState
+import br.com.hillan.gitissues.data.State
 
-class Converters {
+class GitIssuesTypeConverters {
 
     @TypeConverter
     fun fromUserToJson(user: User): String {
@@ -31,9 +31,9 @@ class Converters {
     }
 
     @TypeConverter
-    fun toIssueState(value: String) = enumValueOf<IssueState>(value)
+    fun toState(value: String) = enumValueOf<State>(value)
 
     @TypeConverter
-    fun fromIssueState(value: IssueState) = value.name
+    fun fromState(value: State) = value.name
 
 }

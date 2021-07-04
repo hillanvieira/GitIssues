@@ -9,6 +9,8 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,11 +19,10 @@ import br.com.hillan.gitissues.adapter.IssueListAdapter
 import br.com.hillan.gitissues.databinding.FragmentIssueListBinding
 import br.com.hillan.gitissues.data.models.Issue
 import br.com.hillan.gitissues.ui.MainActivity
-import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class IssueListFragment() : Fragment() {
 
-    private val mIssueViewModel: IssueViewModel by sharedViewModel<IssueViewModel>()
+    private val mIssueViewModel: IssueViewModel by activityViewModels()
     private lateinit var binding: FragmentIssueListBinding
 
     private val orientation:Int

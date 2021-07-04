@@ -8,22 +8,23 @@ import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.Dispatchers
 import br.com.hillan.gitissues.data.models.Issue
 import br.com.hillan.gitissues.util.UpdateListWorker
-import br.com.hillan.gitissues.data.source.IssueRepository
+import br.com.hillan.gitissues.data.source.DefaultIssueRepository
 import kotlinx.coroutines.CoroutineDispatcher
 
 
 class IssueViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val mRepository: IssueRepository = IssueRepository(application)
+    private val issueRepository: DefaultIssueRepository = DefaultIssueRepository.getRepository(application)
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 
     //convert flow to MutableLiveData
     var allIssues: MutableLiveData<List<Issue>> =
-        mRepository.allIssuesFromDb.asLiveData() as MutableLiveData<List<Issue>>
+        issueRepository.allIssuesFromDb.asLiveData() as MutableLiveData<List<Issue>>
+
 
     val idInput = MutableLiveData<Long>()
     val issueById: LiveData<Issue> = Transformations.switchMap(idInput) {
-        it -> mRepository.getIssueByID(it)
+        it -> issueRepository.getIssueByID(it)
     }
 
     init {
@@ -55,19 +56,19 @@ class IssueViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getIssueByID(id: Long): LiveData<Issue> {
-        return mRepository.getIssueByID(id)
+        return issueRepository.getIssueByID(id)
     }
 
     fun insert(issue: Issue) = viewModelScope.launch(ioDispatcher) {
-        mRepository.insert(issue = issue)
+        issueRepository.insert(issue = issue)
     }
 
     fun insertList(issues: List<Issue>) = viewModelScope.launch(ioDispatcher) {
-        mRepository.insertList(issues = issues)
+        issueRepository.insertList(issues = issues)
     }
 
     fun getIssue(id: Long): LiveData<Issue> {
-        val issue: LiveData<Issue> = mRepository.getIssueByID(id)
+        val issue: LiveData<Issue> = issueRepository.getIssueByID(id)
         return issue
     }
 

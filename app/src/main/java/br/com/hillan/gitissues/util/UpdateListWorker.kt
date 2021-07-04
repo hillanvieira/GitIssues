@@ -8,24 +8,22 @@ import android.content.Context
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import br.com.hillan.gitissues.R
-import org.koin.standalone.inject
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Dispatchers
 import android.app.NotificationManager
 import android.content.SharedPreferences
-import org.koin.standalone.KoinComponent
 import androidx.core.app.NotificationCompat
 import br.com.hillan.gitissues.ui.MainActivity
 import android.content.Context.NOTIFICATION_SERVICE
 import androidx.navigation.NavDeepLinkBuilder
-import br.com.hillan.gitissues.data.source.IssueRepository
+import br.com.hillan.gitissues.data.source.DefaultIssueRepository
 
 
 class UpdateListWorker(context: Context, workerParams: WorkerParameters) :
-    Worker(context, workerParams), KoinComponent {
+    Worker(context, workerParams){
 
-    private val repository: IssueRepository = IssueRepository(context as Application)
+    private val repositoryDefault: DefaultIssueRepository = DefaultIssueRepository(context as Application)
 
 
     var sharedpreferences: SharedPreferences =
@@ -39,11 +37,11 @@ class UpdateListWorker(context: Context, workerParams: WorkerParameters) :
         oldLastIssue = sharedpreferences.getString("lastIssueTitle", "no new issues")!!
 
         GlobalScope.launch(Dispatchers.IO) {
-            repository.updateListToDb()
+            repositoryDefault.updateListToDb()
 
             delay(5000)
             //repository.lastIssue.take(1).collect { it -> newLastIssue = it.title }
-            newLastIssue = repository.getLast().title
+            newLastIssue = repositoryDefault.getLast().title
             Log.i("WORK_NOTIFICATION", newLastIssue)
             Log.i("WORK_NOTIFICATION", "PREPARING")
             if (oldLastIssue != newLastIssue) {

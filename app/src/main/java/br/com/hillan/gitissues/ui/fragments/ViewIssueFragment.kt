@@ -12,17 +12,18 @@ import br.com.hillan.gitissues.R
 import java.text.SimpleDateFormat
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import br.com.hillan.gitissues.data.models.Issue
 import br.com.hillan.gitissues.viewmodel.IssueViewModel
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import br.com.hillan.gitissues.databinding.FragmentViewIssueBinding
 import br.com.hillan.gitissues.ui.MainActivity
-import org.koin.android.viewmodel.ext.android.sharedViewModel
+
 
 class ViewIssueFragment : Fragment() {
 
     //private val mIssueViewModel: IssueViewModel by viewModel()
-    private val mIssueViewModel: IssueViewModel by sharedViewModel<IssueViewModel>()
+    private val mIssueViewModel: IssueViewModel by activityViewModels()
     private lateinit var binding: FragmentViewIssueBinding
 
     private lateinit var titleText: TextView
