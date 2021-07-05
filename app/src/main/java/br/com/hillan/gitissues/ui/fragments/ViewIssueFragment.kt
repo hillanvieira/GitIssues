@@ -23,7 +23,7 @@ import br.com.hillan.gitissues.ui.MainActivity
 class ViewIssueFragment : Fragment() {
 
     //private val mIssueViewModel: IssueViewModel by viewModel()
-    private val mIssueViewModel: IssueViewModel by activityViewModels()
+    private val issueViewModel: IssueViewModel by activityViewModels()
     private lateinit var binding: FragmentViewIssueBinding
 
     private lateinit var titleText: TextView
@@ -57,7 +57,7 @@ class ViewIssueFragment : Fragment() {
 //            }
 //        })
 
-        mIssueViewModel.issueById.observe(viewLifecycleOwner, {
+        issueViewModel.issueById.observe(viewLifecycleOwner, {
             if (it != null) {
                 configureView(it)
             }

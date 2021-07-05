@@ -1,4 +1,4 @@
-package br.com.hillan.gitissues.util
+package br.com.hillan.gitissues.workers
 
 import android.app.Application
 import android.util.Log
@@ -18,6 +18,7 @@ import br.com.hillan.gitissues.ui.MainActivity
 import android.content.Context.NOTIFICATION_SERVICE
 import androidx.navigation.NavDeepLinkBuilder
 import br.com.hillan.gitissues.data.source.DefaultIssueRepository
+import br.com.hillan.gitissues.data.Result.Success
 
 
 class UpdateListWorker(context: Context, workerParams: WorkerParameters) :
@@ -37,11 +38,17 @@ class UpdateListWorker(context: Context, workerParams: WorkerParameters) :
         oldLastIssue = sharedpreferences.getString("lastIssueTitle", "no new issues")!!
 
         GlobalScope.launch(Dispatchers.IO) {
-            repositoryDefault.updateListToDb()
+            repositoryDefault.refreshIssues()
 
             delay(5000)
             //repository.lastIssue.take(1).collect { it -> newLastIssue = it.title }
-            newLastIssue = repositoryDefault.getLast().title
+
+            val lastIssue = repositoryDefault.getLastIssue()
+
+            if(lastIssue is Success){
+                newLastIssue = lastIssue.data.title
+            }
+
             Log.i("WORK_NOTIFICATION", newLastIssue)
             Log.i("WORK_NOTIFICATION", "PREPARING")
             if (oldLastIssue != newLastIssue) {

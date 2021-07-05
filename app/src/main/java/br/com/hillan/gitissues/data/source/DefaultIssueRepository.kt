@@ -1,30 +1,28 @@
 package br.com.hillan.gitissues.data.source
 
 import android.app.Application
-import retrofit2.Call
 import android.util.Log
-import retrofit2.Callback
-import retrofit2.Response
-import kotlinx.coroutines.launch
 import androidx.lifecycle.LiveData
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.GlobalScope
-import androidx.annotation.WorkerThread
 import androidx.room.Room
 import br.com.hillan.gitissues.data.models.Issue
 import br.com.hillan.gitissues.data.source.local.GitIssuesDatabase
 import br.com.hillan.gitissues.data.source.local.IssuesLocalDataSource
-import br.com.hillan.gitissues.data.source.remote.IssueService
-import br.com.hillan.gitissues.data.source.remote.RetrofitProvider
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import br.com.hillan.gitissues.data.source.remote.*
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import br.com.hillan.gitissues.data.Result
+import br.com.hillan.gitissues.data.Result.Success
+import br.com.hillan.gitissues.data.Result.Error
+
+
 
 class DefaultIssueRepository(application: Application) {
 
     private val issuesLocalDataSource: IssuesLocalDataSource
-    private val mIssueService: IssueService = RetrofitProvider().service
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val issuesRemoteDataSource: IssuesRemoteDataSource
+    //private val mIssueService: IssueService = RetrofitProvider().service
+    //private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 
     companion object {
         @Volatile
@@ -39,7 +37,6 @@ class DefaultIssueRepository(application: Application) {
         }
 
 
-
         val FRESH_TIMEOUT = TimeUnit.DAYS.toMillis(1)
         var counter: Int = 0
         fun counter(): Int {
@@ -49,72 +46,76 @@ class DefaultIssueRepository(application: Application) {
 
     init {
 
-        val database = Room.databaseBuilder(application.applicationContext,
+        val database = Room.databaseBuilder(
+            application.applicationContext,
             GitIssuesDatabase::class.java, "issue.db")
             .build()
         issuesLocalDataSource = IssuesLocalDataSource(database.issueDao())
 
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL_GITISSUE)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(IssueService::class.java)
+        //val service = retrofit.create(IssueService::class.java)
+        issuesRemoteDataSource = IssuesRemoteDataSource(retrofit)
+
         counter++
-        updateListToDb()
-        Log.i("REPOSITOR_INS", counter.toString())
-
+        Log.i("INSTANCES_VMODEL",counter.toString())
     }
 
-    fun updateListToDb() {
-
-
-        val call = mIssueService.getIssues()
-        call.enqueue(object : Callback<List<Issue>> {
-            override fun onResponse(
-                call: Call<List<Issue>?>?,
-                response: Response<List<Issue>?>?
-            ) {
-                response?.body()?.let {
-                    GlobalScope.launch(ioDispatcher) { insertList(it) }
-                    //Log.i("RETROFIT_RESPONSE",it.toString())
-                }
+    suspend fun getIssues(forceUpdate: Boolean = false): Result<List<Issue>> {
+        if (forceUpdate) {
+            try {
+                updateIssuesFromRemoteDataSource()
+            } catch (ex: Exception) {
+                return Error(ex)
             }
+        }
+        return issuesLocalDataSource.getIssues()
+    }
 
-            override fun onFailure(
-                call: Call<List<Issue>?>?,
-                t: Throwable?
-            ) {
-                Log.i("RETROFIT_RESPONSE", t.toString())
+    suspend fun refreshIssues() {
+        updateIssuesFromRemoteDataSource()
+    }
+
+    fun observeIssues(): LiveData<Result<List<Issue>>> {
+        return issuesLocalDataSource.observeIssues()
+    }
+
+    private suspend fun updateIssuesFromRemoteDataSource() {
+        val remoteIssues = issuesRemoteDataSource.getIssues()
+
+        if (remoteIssues is Success) {
+            // Real apps might want to do a proper sync.
+            issuesLocalDataSource.deleteAllIssues()
+            remoteIssues.data.forEach { issue ->
+                issuesLocalDataSource.saveIssue(issue)
             }
-        })
+        } else if (remoteIssues is Error) {
+            throw remoteIssues.exception
+        }
     }
 
-    val allIssuesFromDb: Flow<List<Issue>>
-    get() {
-        updateListToDb()
-
-        return mIssueDao.observeIssues()
+    fun observeIssue(issueId: Long): LiveData<Result<Issue>> {
+        return issuesLocalDataSource.observeIssue(issueId)
     }
 
 
-
-    val lastIssue: Flow<Issue> = mIssueDao.observeLastIssue()
-
-    fun getIssueByID(id: Long): LiveData<Issue> {
-        return mIssueDao.observeIssueById(id)
+    suspend fun getIssue(issueId: Long,  forceUpdate: Boolean = false): Result<Issue> {
+        if (forceUpdate) {
+            updateIssuesFromRemoteDataSource()
+        }
+        return issuesLocalDataSource.getIssue(issueId)
     }
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun getLast(): Issue {
-        return mIssueDao.getLastIssue()
+    private suspend fun getIssueWithId(id: Long): Result<Issue> {
+        return issuesLocalDataSource.getIssue(id)
     }
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun insert(issue: Issue) {
-        mIssueDao.insertIssues(issue)
-    }
-
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun insertList(issues: List<Issue>) {
-        mIssueDao.insertListIssues(issues)
+    suspend fun getLastIssue(): Result<Issue>{
+        return issuesLocalDataSource.getLastIssue()
     }
 
 }

@@ -10,7 +10,6 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +21,7 @@ import br.com.hillan.gitissues.ui.MainActivity
 
 class IssueListFragment() : Fragment() {
 
-    private val mIssueViewModel: IssueViewModel by activityViewModels()
+    private val issueViewModel: IssueViewModel by activityViewModels()
     private lateinit var binding: FragmentIssueListBinding
 
     private val orientation:Int
@@ -51,13 +50,13 @@ class IssueListFragment() : Fragment() {
     // Post view initialization logic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        Log.i("INSTANCE", "$mIssueViewModel")
-        mIssueViewModel.allIssues.observe(viewLifecycleOwner, {
+        Log.i("INSTANCE", "$issueViewModel")
+        issueViewModel.items.observe(viewLifecycleOwner, {
             if (it != null ) {
                 if(it.isNotEmpty()){
                     print(it)
                     configureRecyclerView(IssueListAdapter(it, requireActivity()))
-                    mIssueViewModel.idInput.value = it.last().id
+                    issueViewModel.idInput.value = it.last().id
                     binding.errorMessage.visibility =  INVISIBLE
                 }else{
                     binding.errorMessage.visibility =  VISIBLE
@@ -83,7 +82,7 @@ class IssueListFragment() : Fragment() {
 
     private fun openIssueViewFragment(it: Issue) {
 
-        mIssueViewModel.idInput.value = it.id
+        issueViewModel.idInput.value = it.id
 
         if(orientation == Configuration.ORIENTATION_PORTRAIT ){
             val directions =
