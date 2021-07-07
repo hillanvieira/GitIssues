@@ -1,12 +1,25 @@
 package br.com.hillan.gitissues.application
 
-import android.os.Build
 import android.app.Application
-import android.content.Context
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.*
+import br.com.hillan.gitissues.BuildConfig
+import br.com.hillan.gitissues.workers.UpdateListWorker
+import dagger.hilt.android.HiltAndroidApp
+import timber.log.Timber
+import timber.log.Timber.DebugTree
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class GitIssuesApplication : Application() {
+
+@HiltAndroidApp
+class GitIssuesApplication : Application(), Configuration.Provider {
+
+    @Inject lateinit var workerFactory: HiltWorkerFactory
 
     private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
@@ -25,6 +38,26 @@ class GitIssuesApplication : Application() {
         }
     }
 
+    private fun setupWorkManager(context: Context) {
+        val updateListWorker: PeriodicWorkRequest =
+            PeriodicWorkRequestBuilder<UpdateListWorker>(
+                15,
+                TimeUnit.MINUTES
+            ).setInitialDelay(30000, TimeUnit.MILLISECONDS).build()
+
+        try {
+            WorkManager.getInstance(context)
+                .enqueueUniquePeriodicWork(
+                    "checkUpdate",
+                    ExistingPeriodicWorkPolicy.KEEP,
+                    updateListWorker
+                )
+        } catch (e: Exception) {
+            Timber.e(e)
+        }
+
+    }
+
     // Called when the application is starting, before any other application objects have been created.
     // Overriding this method is totally optional!
     override fun onCreate() {
@@ -32,6 +65,21 @@ class GitIssuesApplication : Application() {
 
         createNotificationChannel()
 
+        //Scheduler task with WorkManager PeriodicWorkRequestBuilder KEEP
+
+        setupWorkManager(applicationContext)
+
+        // Configure Timber
+        if (BuildConfig.DEBUG) {
+            Timber.plant(DebugTree())
+        }
+    }
+
+
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
     }
 
 }

@@ -1,7 +1,9 @@
 package br.com.hillan.gitissues.data.source.local
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
+import androidx.room.Room
 import br.com.hillan.gitissues.data.source.IssuesDataSource
 import br.com.hillan.gitissues.data.models.Issue
 import kotlinx.coroutines.CoroutineDispatcher
@@ -10,9 +12,11 @@ import kotlinx.coroutines.withContext
 import br.com.hillan.gitissues.data.Result.Success
 import br.com.hillan.gitissues.data.Result.Error
 import br.com.hillan.gitissues.data.Result
+import java.util.concurrent.Executors
+import javax.inject.Inject
 
 
-class IssuesLocalDataSource internal constructor(
+class IssuesLocalDataSource @Inject internal constructor(
     private val issueDao: IssueDao,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : IssuesDataSource {

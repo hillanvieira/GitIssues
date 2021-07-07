@@ -1,7 +1,5 @@
 package br.com.hillan.gitissues.workers
 
-import android.app.Application
-import android.util.Log
 import androidx.work.Worker
 import android.content.Intent
 import android.content.Context
@@ -16,16 +14,25 @@ import android.content.SharedPreferences
 import androidx.core.app.NotificationCompat
 import br.com.hillan.gitissues.ui.MainActivity
 import android.content.Context.NOTIFICATION_SERVICE
+import androidx.hilt.work.HiltWorker
 import androidx.navigation.NavDeepLinkBuilder
 import br.com.hillan.gitissues.data.source.DefaultIssueRepository
 import br.com.hillan.gitissues.data.Result.Success
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import timber.log.Timber
+import javax.inject.Inject
+import javax.inject.Singleton
 
+@HiltWorker
+class UpdateListWorker @AssistedInject constructor(
+    val defaultIssueRepository: DefaultIssueRepository,
+    @Assisted context: Context,
+    @Assisted workerParams: WorkerParameters
+) :
+    Worker(context, workerParams) {
 
-class UpdateListWorker(context: Context, workerParams: WorkerParameters) :
-    Worker(context, workerParams){
-
-    private val repositoryDefault: DefaultIssueRepository = DefaultIssueRepository(context as Application)
-
+    val any = defaultIssueRepository
 
     var sharedpreferences: SharedPreferences =
         applicationContext.getSharedPreferences("gitissues_preferences", Context.MODE_PRIVATE)
@@ -38,28 +45,28 @@ class UpdateListWorker(context: Context, workerParams: WorkerParameters) :
         oldLastIssue = sharedpreferences.getString("lastIssueTitle", "no new issues")!!
 
         GlobalScope.launch(Dispatchers.IO) {
-            repositoryDefault.refreshIssues()
+            defaultIssueRepository.refreshIssues()
 
             delay(5000)
             //repository.lastIssue.take(1).collect { it -> newLastIssue = it.title }
 
-            val lastIssue = repositoryDefault.getLastIssue()
+            val lastIssue = defaultIssueRepository.getLastIssue()
 
-            if(lastIssue is Success){
+            if (lastIssue is Success) {
                 newLastIssue = lastIssue.data.title
             }
 
-            Log.i("WORK_NOTIFICATION", newLastIssue)
-            Log.i("WORK_NOTIFICATION", "PREPARING")
+            Timber.i("NEW LAST ISSUE $newLastIssue")
+            Timber.i("PREPARING")
             if (oldLastIssue != newLastIssue) {
                 sendNotification(newLastIssue)
-                Log.i("WORK_NOTIFICATION", "NOTIFYING")
+                Timber.i("NOTIFYING")
             } else {
-                Log.i("WORK_NOTIFICATION", "NOT_NOTIFY")
+                Timber.i("NOT_NOTIFY")
             }
             sharedpreferences.edit().putString("lastIssueTitle", newLastIssue).apply()
         }
-        Log.i("WORK_", "LAUNCHED")
+        Timber.i("LAUNCHED")
 
         return Result.success()
     }

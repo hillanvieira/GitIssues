@@ -18,10 +18,12 @@ import br.com.hillan.gitissues.adapter.IssueListAdapter
 import br.com.hillan.gitissues.databinding.FragmentIssueListBinding
 import br.com.hillan.gitissues.data.models.Issue
 import br.com.hillan.gitissues.ui.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class IssueListFragment() : Fragment() {
 
-    private val issueViewModel: IssueViewModel by activityViewModels()
+    val issueViewModel: IssueViewModel by activityViewModels()
     private lateinit var binding: FragmentIssueListBinding
 
     private val orientation:Int
@@ -54,7 +56,6 @@ class IssueListFragment() : Fragment() {
         issueViewModel.items.observe(viewLifecycleOwner, {
             if (it != null ) {
                 if(it.isNotEmpty()){
-                    print(it)
                     configureRecyclerView(IssueListAdapter(it, requireActivity()))
                     issueViewModel.idInput.value = it.last().id
                     binding.errorMessage.visibility =  INVISIBLE

@@ -1,25 +1,24 @@
 package br.com.hillan.gitissues.viewmodel
 
-import androidx.work.*
 import androidx.lifecycle.*
 import android.app.Application
 import br.com.hillan.gitissues.data.Result
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.Dispatchers
 import br.com.hillan.gitissues.data.models.Issue
 import br.com.hillan.gitissues.data.models.User
-import br.com.hillan.gitissues.workers.UpdateListWorker
 import br.com.hillan.gitissues.data.source.DefaultIssueRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+
 import java.util.*
+import javax.inject.Inject
+
+@HiltViewModel
+class IssueViewModel @Inject constructor(application: Application, val issueRepository: DefaultIssueRepository) : AndroidViewModel(application) {
 
 
-class IssueViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val issueRepository: DefaultIssueRepository = DefaultIssueRepository.getRepository(application)
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-
     private val _forceUpdate = MutableLiveData<Boolean>(false)
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
@@ -67,9 +66,6 @@ class IssueViewModel(application: Application) : AndroidViewModel(application) {
             issueRepository.refreshIssues()
         }
 
-        //Scheduler task with WorkManager PeriodicWorkRequestBuilder KEEP
-        setupWorkManager(application)
-
         //testes with coroutines
 //        GlobalScope.launch(Dispatchers.IO) {
 //            delay(2000)
@@ -79,19 +75,4 @@ class IssueViewModel(application: Application) : AndroidViewModel(application) {
 //        }
 
     }
-
-    private fun setupWorkManager(application: Application) {
-        val updateListWorker: PeriodicWorkRequest =
-            PeriodicWorkRequestBuilder<UpdateListWorker>(
-                15,
-                TimeUnit.MINUTES
-            ).setInitialDelay(30000, TimeUnit.MILLISECONDS).build()
-        WorkManager.getInstance(application)
-            .enqueueUniquePeriodicWork(
-                "checkUpdate",
-                ExistingPeriodicWorkPolicy.KEEP,
-                updateListWorker
-            )
-    }
-
 }

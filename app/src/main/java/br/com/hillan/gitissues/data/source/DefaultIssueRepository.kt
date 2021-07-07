@@ -1,43 +1,22 @@
 package br.com.hillan.gitissues.data.source
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.room.Room
-import br.com.hillan.gitissues.data.models.Issue
-import br.com.hillan.gitissues.data.source.local.GitIssuesDatabase
-import br.com.hillan.gitissues.data.source.local.IssuesLocalDataSource
-import br.com.hillan.gitissues.data.source.remote.*
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 import br.com.hillan.gitissues.data.Result
-import br.com.hillan.gitissues.data.Result.Success
 import br.com.hillan.gitissues.data.Result.Error
+import br.com.hillan.gitissues.data.Result.Success
+import br.com.hillan.gitissues.data.models.Issue
+import timber.log.Timber
+import javax.inject.Inject
 
 
-
-class DefaultIssueRepository(application: Application) {
-
-    private val issuesLocalDataSource: IssuesLocalDataSource
-    private val issuesRemoteDataSource: IssuesRemoteDataSource
-    //private val mIssueService: IssueService = RetrofitProvider().service
-    //private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+class DefaultIssueRepository @Inject constructor(
+    private val issuesLocalDataSource: IssuesDataSource,
+    private val issuesRemoteDataSource: IssuesDataSource
+) {
 
     companion object {
-        @Volatile
-        private var INSTANCE: DefaultIssueRepository? = null
 
-        fun getRepository(app: Application): DefaultIssueRepository {
-            return INSTANCE ?: synchronized(this) {
-                DefaultIssueRepository(app).also {
-                    INSTANCE = it
-                }
-            }
-        }
-
-
-        val FRESH_TIMEOUT = TimeUnit.DAYS.toMillis(1)
         var counter: Int = 0
         fun counter(): Int {
             return counter
@@ -45,24 +24,8 @@ class DefaultIssueRepository(application: Application) {
     }
 
     init {
-
-        val database = Room.databaseBuilder(
-            application.applicationContext,
-            GitIssuesDatabase::class.java, "issue.db")
-            .build()
-        issuesLocalDataSource = IssuesLocalDataSource(database.issueDao())
-
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL_GITISSUE)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(IssueService::class.java)
-        //val service = retrofit.create(IssueService::class.java)
-        issuesRemoteDataSource = IssuesRemoteDataSource(retrofit)
-
         counter++
-        Log.i("INSTANCES_VMODEL",counter.toString())
+        Timber.i("INSTANCES_REPOSITORY")
     }
 
     suspend fun getIssues(forceUpdate: Boolean = false): Result<List<Issue>> {
@@ -103,7 +66,7 @@ class DefaultIssueRepository(application: Application) {
     }
 
 
-    suspend fun getIssue(issueId: Long,  forceUpdate: Boolean = false): Result<Issue> {
+    suspend fun getIssue(issueId: Long, forceUpdate: Boolean = false): Result<Issue> {
         if (forceUpdate) {
             updateIssuesFromRemoteDataSource()
         }
@@ -114,7 +77,7 @@ class DefaultIssueRepository(application: Application) {
         return issuesLocalDataSource.getIssue(id)
     }
 
-    suspend fun getLastIssue(): Result<Issue>{
+    suspend fun getLastIssue(): Result<Issue> {
         return issuesLocalDataSource.getLastIssue()
     }
 

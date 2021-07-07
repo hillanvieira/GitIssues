@@ -18,12 +18,13 @@ import br.com.hillan.gitissues.viewmodel.IssueViewModel
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import br.com.hillan.gitissues.databinding.FragmentViewIssueBinding
 import br.com.hillan.gitissues.ui.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class ViewIssueFragment : Fragment() {
 
     //private val mIssueViewModel: IssueViewModel by viewModel()
-    private val issueViewModel: IssueViewModel by activityViewModels()
+    val issueViewModel: IssueViewModel by activityViewModels()
     private lateinit var binding: FragmentViewIssueBinding
 
     private lateinit var titleText: TextView

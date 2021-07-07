@@ -13,8 +13,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
+import javax.inject.Inject
 
-class IssuesRemoteDataSource internal constructor(
+class IssuesRemoteDataSource @Inject internal constructor(
     private val issueService: IssueService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): IssuesDataSource {
