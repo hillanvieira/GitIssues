@@ -17,12 +17,9 @@ import android.content.Context.NOTIFICATION_SERVICE
 import androidx.hilt.work.HiltWorker
 import androidx.navigation.NavDeepLinkBuilder
 import br.com.hillan.gitissues.data.source.DefaultIssueRepository
-import br.com.hillan.gitissues.data.Result.Success
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 @HiltWorker
 class UpdateListWorker @AssistedInject constructor(
@@ -31,8 +28,6 @@ class UpdateListWorker @AssistedInject constructor(
     @Assisted workerParams: WorkerParameters
 ) :
     Worker(context, workerParams) {
-
-    val any = defaultIssueRepository
 
     var sharedpreferences: SharedPreferences =
         applicationContext.getSharedPreferences("gitissues_preferences", Context.MODE_PRIVATE)
@@ -52,8 +47,8 @@ class UpdateListWorker @AssistedInject constructor(
 
             val lastIssue = defaultIssueRepository.getLastIssue()
 
-            if (lastIssue is Success) {
-                newLastIssue = lastIssue.data.title
+            if (lastIssue.isSuccess) {
+                newLastIssue = lastIssue.getOrNull()!!.title
             }
 
             Timber.i("NEW LAST ISSUE $newLastIssue")

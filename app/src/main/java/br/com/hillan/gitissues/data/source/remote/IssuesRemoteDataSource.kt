@@ -3,9 +3,6 @@ package br.com.hillan.gitissues.data.source.remote
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
-import br.com.hillan.gitissues.data.Result
-import br.com.hillan.gitissues.data.Result.Success
-import br.com.hillan.gitissues.data.Result.Error
 import br.com.hillan.gitissues.data.models.Issue
 import br.com.hillan.gitissues.data.models.User
 import br.com.hillan.gitissues.data.source.IssuesDataSource
@@ -14,13 +11,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
+import kotlin.Result.Companion.failure
+import kotlin.Result.Companion.success
 
 class IssuesRemoteDataSource @Inject internal constructor(
     private val issueService: IssueService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): IssuesDataSource {
 
-    private val resultIssue = Success(Issue(0L,"", Date(),"","","", User("")))
+    private val resultIssue: Result<Issue> = success(Issue(0L,"", Date(),"","","", User("")))
 
     private val liveDataIssue: MutableLiveData<Result<Issue>> by lazy {
         MutableLiveData<Result<Issue>>()
@@ -28,20 +27,21 @@ class IssuesRemoteDataSource @Inject internal constructor(
 
     override fun observeIssues(): LiveData<Result<List<Issue>>> {
         return issueService.observeIssues().map {
-           Success(it)
+           success(it)
         }
     }
 
     override suspend fun getIssues(): Result<List<Issue>> = withContext(ioDispatcher) {
+
         try {
             val issue = issueService.getIssues()
             if (issue != null) {
-                return@withContext Success(issue)
+                return@withContext success(issue)
             } else {
-                return@withContext Error(Exception("Issue not found!"))
+                return@withContext failure(Exception("Issue not found!"))
             }
         } catch (e: Exception) {
-            return@withContext Error(e)
+            return@withContext failure(e)
         }
     }
 

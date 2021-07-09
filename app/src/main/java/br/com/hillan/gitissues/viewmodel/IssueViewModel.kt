@@ -2,7 +2,6 @@ package br.com.hillan.gitissues.viewmodel
 
 import androidx.lifecycle.*
 import android.app.Application
-import br.com.hillan.gitissues.data.Result
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
 import br.com.hillan.gitissues.data.models.Issue
@@ -23,7 +22,6 @@ class IssueViewModel @Inject constructor(application: Application, val issueRepo
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
 
-
     private val _items: LiveData<List<Issue>> = _forceUpdate.switchMap { forceUpdate ->
         if (forceUpdate) {
             _dataLoading.value = true
@@ -35,8 +33,8 @@ class IssueViewModel @Inject constructor(application: Application, val issueRepo
         issueRepository.observeIssues().switchMap { it ->
 
             val result = MutableLiveData<List<Issue>>()
-            if (it is Result.Success) {
-                result.value = it.data
+            if (it.isSuccess) {
+                result.value = it.getOrDefault(emptyList())
             } else {
                 result.value = emptyList()
             }
@@ -51,8 +49,8 @@ class IssueViewModel @Inject constructor(application: Application, val issueRepo
         issueRepository.observeIssue(it).switchMap { it ->
 
             val result = MutableLiveData<Issue>()
-            if (it is Result.Success) {
-                result.value = it.data
+            if (it.isSuccess) {
+                result.value = it.getOrNull()
             } else {
                 result.value = Issue(0L, "Error", Date(), "#Error", "", "", User(""))
             }

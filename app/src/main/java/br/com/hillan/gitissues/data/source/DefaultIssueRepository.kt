@@ -1,14 +1,11 @@
 package br.com.hillan.gitissues.data.source
 
-import android.app.Application
 import androidx.lifecycle.LiveData
-import br.com.hillan.gitissues.data.Result
-import br.com.hillan.gitissues.data.Result.Error
-import br.com.hillan.gitissues.data.Result.Success
 import br.com.hillan.gitissues.data.models.Issue
 import timber.log.Timber
 import javax.inject.Inject
-
+import kotlin.Result.Companion.failure
+import kotlin.Result.Companion.success
 
 class DefaultIssueRepository @Inject constructor(
     private val issuesLocalDataSource: IssuesDataSource,
@@ -32,8 +29,8 @@ class DefaultIssueRepository @Inject constructor(
         if (forceUpdate) {
             try {
                 updateIssuesFromRemoteDataSource()
-            } catch (ex: Exception) {
-                return Error(ex)
+            } catch (e: Exception) {
+                return failure(e)
             }
         }
         return issuesLocalDataSource.getIssues()
@@ -50,14 +47,16 @@ class DefaultIssueRepository @Inject constructor(
     private suspend fun updateIssuesFromRemoteDataSource() {
         val remoteIssues = issuesRemoteDataSource.getIssues()
 
-        if (remoteIssues is Success) {
+        if (remoteIssues.isSuccess) {
             // Real apps might want to do a proper sync.
             issuesLocalDataSource.deleteAllIssues()
-            remoteIssues.data.forEach { issue ->
+
+            remoteIssues.getOrNull()!!.forEach { issue ->
                 issuesLocalDataSource.saveIssue(issue)
             }
-        } else if (remoteIssues is Error) {
-            throw remoteIssues.exception
+
+        } else if (remoteIssues.isFailure) {
+            throw remoteIssues.exceptionOrNull()!!
         }
     }
 

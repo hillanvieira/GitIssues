@@ -2,7 +2,6 @@ package br.com.hillan.gitissues.data.source
 
 import androidx.lifecycle.LiveData
 import br.com.hillan.gitissues.data.models.Issue
-import br.com.hillan.gitissues.data.Result
 
 interface IssuesDataSource {
 
