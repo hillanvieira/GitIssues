@@ -1,8 +1,8 @@
-package br.com.hillan.gitissues.data.source.local
+package br.com.hillan.dataissues.data.source.local
 
 import androidx.room.*
 import androidx.lifecycle.LiveData
-import br.com.hillan.gitissues.data.models.Issue
+import br.com.hillan.dataissues.data.Issue
 import androidx.room.OnConflictStrategy.REPLACE
 
 @Dao

@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.cardview.widget.CardView
-import br.com.hillan.gitissues.data.models.Issue
+import br.com.hillan.dataissues.data.Issue
 import androidx.recyclerview.widget.RecyclerView
 import br.com.hillan.gitissues.databinding.IssueItemBinding
 

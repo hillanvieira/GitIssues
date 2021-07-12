@@ -1,4 +1,4 @@
-package br.com.hillan.gitissues.data.models
+package br.com.hillan.dataissues.data
 
 import java.util.*
 import androidx.room.Entity

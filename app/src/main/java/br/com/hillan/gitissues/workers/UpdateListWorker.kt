@@ -16,7 +16,7 @@ import br.com.hillan.gitissues.ui.MainActivity
 import android.content.Context.NOTIFICATION_SERVICE
 import androidx.hilt.work.HiltWorker
 import androidx.navigation.NavDeepLinkBuilder
-import br.com.hillan.gitissues.data.source.DefaultIssueRepository
+import br.com.hillan.dataissues.data.source.DefaultIssueRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import timber.log.Timber

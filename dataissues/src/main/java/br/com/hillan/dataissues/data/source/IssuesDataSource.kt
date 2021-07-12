@@ -1,7 +1,7 @@
-package br.com.hillan.gitissues.data.source
+package br.com.hillan.dataissues.data.source
 
 import androidx.lifecycle.LiveData
-import br.com.hillan.gitissues.data.models.Issue
+import br.com.hillan.dataissues.data.Issue
 
 interface IssuesDataSource {
 

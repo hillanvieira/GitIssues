@@ -1,11 +1,10 @@
-package br.com.hillan.gitissues.data.source
+package br.com.hillan.dataissues.data.source
 
 import androidx.lifecycle.LiveData
-import br.com.hillan.gitissues.data.models.Issue
+import br.com.hillan.dataissues.data.Issue
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.Result.Companion.failure
-import kotlin.Result.Companion.success
 
 class DefaultIssueRepository @Inject constructor(
     private val issuesLocalDataSource: IssuesDataSource,

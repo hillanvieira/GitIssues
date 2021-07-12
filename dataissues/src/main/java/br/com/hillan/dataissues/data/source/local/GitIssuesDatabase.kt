@@ -1,10 +1,10 @@
-package br.com.hillan.gitissues.data.source.local
+package br.com.hillan.dataissues.data.source.local
 
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import br.com.hillan.gitissues.data.models.Issue
+import br.com.hillan.dataissues.data.Issue
 
 const val DATABASE_NAME = "issues.db"
 

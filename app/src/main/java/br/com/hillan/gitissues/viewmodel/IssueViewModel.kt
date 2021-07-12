@@ -4,9 +4,9 @@ import androidx.lifecycle.*
 import android.app.Application
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
-import br.com.hillan.gitissues.data.models.Issue
-import br.com.hillan.gitissues.data.models.User
-import br.com.hillan.gitissues.data.source.DefaultIssueRepository
+import br.com.hillan.dataissues.data.Issue
+import br.com.hillan.dataissues.data.User
+import br.com.hillan.dataissues.data.source.DefaultIssueRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 

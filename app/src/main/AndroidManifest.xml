@@ -7,33 +7,36 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".application.GitIssuesApplication"
+        android:name="br.com.hillan.gitissues.application.GitIssuesApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GitIssues">
-        <activity android:name=".ui.MainActivity">
+        <activity android:name="br.com.hillan.gitissues.DashBoard">
+
+        </activity>
+        <activity android:name="br.com.hillan.gitissues.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
             android:authorities="${applicationId}.workmanager-init"
             tools:node="remove" />
 
-        <uses-library android:name="android.test.runner"
+        <uses-library
+            android:name="android.test.runner"
             android:required="false" />
-        <uses-library android:name="android.test.base"
+        <uses-library
+            android:name="android.test.base"
             android:required="false" />
-        <uses-library android:name="android.test.mock"
+        <uses-library
+            android:name="android.test.mock"
             android:required="false" />
-
     </application>
 
 </manifest>

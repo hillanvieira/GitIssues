@@ -3,9 +3,10 @@ package br.com.hillan.gitissues.data.source.remote
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
-import br.com.hillan.gitissues.data.models.Issue
-import br.com.hillan.gitissues.data.models.User
-import br.com.hillan.gitissues.data.source.IssuesDataSource
+import br.com.hillan.dataissues.data.source.remote.IssueService
+import br.com.hillan.dataissues.data.Issue
+import br.com.hillan.dataissues.data.User
+import br.com.hillan.dataissues.data.source.IssuesDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

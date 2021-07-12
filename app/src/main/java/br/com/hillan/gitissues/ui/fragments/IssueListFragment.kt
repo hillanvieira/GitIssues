@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.hillan.gitissues.viewmodel.IssueViewModel
 import br.com.hillan.gitissues.adapter.IssueListAdapter
 import br.com.hillan.gitissues.databinding.FragmentIssueListBinding
-import br.com.hillan.gitissues.data.models.Issue
+import br.com.hillan.dataissues.data.Issue
 import br.com.hillan.gitissues.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 

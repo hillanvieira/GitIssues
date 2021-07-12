@@ -1,8 +1,8 @@
-package br.com.hillan.gitissues.data.source.remote
+package br.com.hillan.dataissues.data.source.remote
 
 import androidx.lifecycle.LiveData
 import retrofit2.http.GET
-import br.com.hillan.gitissues.data.models.Issue
+import br.com.hillan.dataissues.data.Issue
 
 const val BASE_URL_GITISSUE = "https://api.github.com/repos/androiddevbr/vagas/"
 

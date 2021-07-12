@@ -1,2 +1,3 @@
-include ':app'
 rootProject.name = "GitIssues"
+include ':app'
+include ':dataIssues'
