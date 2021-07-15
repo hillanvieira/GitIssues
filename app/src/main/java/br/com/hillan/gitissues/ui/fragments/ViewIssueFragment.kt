@@ -1,5 +1,6 @@
 package br.com.hillan.gitissues.ui.fragments
 
+import android.content.res.Configuration
 import java.text.Format
 import android.os.Bundle
 import android.view.View
@@ -13,6 +14,7 @@ import java.text.SimpleDateFormat
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import br.com.hillan.dataissues.data.Issue
 import br.com.hillan.gitissues.viewmodel.IssueViewModel
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -23,9 +25,18 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ViewIssueFragment : Fragment() {
 
-    //private val mIssueViewModel: IssueViewModel by viewModel()
-    val issueViewModel: IssueViewModel by activityViewModels()
+    private val issueViewModel: IssueViewModel by activityViewModels()
     private lateinit var binding: FragmentViewIssueBinding
+
+    private val orientation:Int
+        get() {
+            return when(resources.configuration.orientation){
+                Configuration.ORIENTATION_PORTRAIT -> Configuration.ORIENTATION_PORTRAIT
+                Configuration.ORIENTATION_LANDSCAPE -> Configuration.ORIENTATION_LANDSCAPE
+                Configuration.ORIENTATION_UNDEFINED -> Configuration.ORIENTATION_UNDEFINED
+                else -> Configuration.ORIENTATION_PORTRAIT
+            }
+        }
 
     private lateinit var titleText: TextView
     private lateinit var dateText: TextView
@@ -35,35 +46,37 @@ class ViewIssueFragment : Fragment() {
 
    // private val args: ViewIssueFragmentArgs by navArgs()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if(orientation == Configuration.ORIENTATION_LANDSCAPE ){
+            findNavController().popBackStack()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         if(activity is MainActivity){
             (activity as MainActivity?)?.title = "Issues"
         }
+
         binding = FragmentViewIssueBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     // Post view initialization logic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setObservers()
+    }
 
-    // issueIdByArgs = args.issueId
-
-//        mIssueViewModel.getIssue(issueIdByArgs).observe(viewLifecycleOwner, {
-//            if (it != null) {
-//                configureView(it)
-//            }
-//        })
-
+    private fun setObservers() {
         issueViewModel.issueById.observe(viewLifecycleOwner, {
             if (it != null) {
                 configureView(it)
             }
         })
-
     }
 
     private fun configureView(it: Issue) {
@@ -77,9 +90,7 @@ class ViewIssueFragment : Fragment() {
         bodyText = binding.viewIssueBody
         imageView = binding.avatarImageview
         dateText = binding.dateTextView
-
         titleText.text = it.title
-
 
         val f: Format = SimpleDateFormat("dd/MM/yy")
         val strDate: String = f.format(it.createdAt)

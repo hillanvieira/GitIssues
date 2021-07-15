@@ -2,6 +2,7 @@ package br.com.hillan.gitissues.viewmodel
 
 import androidx.lifecycle.*
 import android.app.Application
+import androidx.lifecycle.Transformations.switchMap
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
 import br.com.hillan.dataissues.data.Issue
@@ -14,8 +15,10 @@ import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class IssueViewModel @Inject constructor(application: Application, val issueRepository: DefaultIssueRepository) : AndroidViewModel(application) {
-
+class IssueViewModel @Inject constructor(
+    application: Application,
+    private val issueRepository: DefaultIssueRepository
+) : AndroidViewModel(application) {
 
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
     private val _forceUpdate = MutableLiveData<Boolean>(false)
@@ -45,32 +48,32 @@ class IssueViewModel @Inject constructor(application: Application, val issueRepo
     val items: LiveData<List<Issue>> = _items
 
     val idInput = MutableLiveData<Long>()
-    val issueById: LiveData<Issue> = Transformations.switchMap(idInput) { it ->
+    val issueById: LiveData<Issue> = switchMap(idInput) { it ->
         issueRepository.observeIssue(it).switchMap { it ->
+
+            val errorIssue = Issue(0L, "Error", Date(), "#Error", "", "", User(""))
 
             val result = MutableLiveData<Issue>()
             if (it.isSuccess) {
-                result.value = it.getOrNull()
+                result.value = it.getOrDefault(errorIssue)
             } else {
-                result.value = Issue(0L, "Error", Date(), "#Error", "", "", User(""))
+                result.value = errorIssue
             }
             result
         }
     }
 
     init {
-
-        viewModelScope.launch {
+        viewModelScope.launch(ioDispatcher) {
             issueRepository.refreshIssues()
+            setLastIssueOnDetailScreen()
         }
+    }
 
-        //testes with coroutines
-//        GlobalScope.launch(Dispatchers.IO) {
-//            delay(2000)
-//            allIssues.postValue(emptyList())
-//            delay(20000)
-//            mRepository.allIssuesFromDb.collect { list -> allIssues.postValue(list) }
-//        }
-
+    private fun setLastIssueOnDetailScreen() {
+        val lastIssue: Long? = items.value?.last()?.id
+        if (lastIssue != null) {
+            idInput.postValue(lastIssue!!)
+        }
     }
 }

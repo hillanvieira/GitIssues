@@ -12,16 +12,12 @@ class DefaultIssueRepository @Inject constructor(
 ) {
 
     companion object {
-
         var counter: Int = 0
-        fun counter(): Int {
-            return counter
-        }
     }
 
     init {
         counter++
-        Timber.i("INSTANCES_REPOSITORY")
+        Timber.i("INSTANCES_REPOSITORY: $counter")
     }
 
     suspend fun getIssues(forceUpdate: Boolean = false): Result<List<Issue>> {

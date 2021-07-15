@@ -23,12 +23,12 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class IssueListFragment() : Fragment() {
 
-    val issueViewModel: IssueViewModel by activityViewModels()
+    private val issueViewModel: IssueViewModel by activityViewModels()
     private lateinit var binding: FragmentIssueListBinding
 
-    private val orientation:Int
+    private val orientation: Int
         get() {
-            return when(resources.configuration.orientation){
+            return when (resources.configuration.orientation) {
                 Configuration.ORIENTATION_PORTRAIT -> Configuration.ORIENTATION_PORTRAIT
                 Configuration.ORIENTATION_LANDSCAPE -> Configuration.ORIENTATION_LANDSCAPE
                 Configuration.ORIENTATION_UNDEFINED -> Configuration.ORIENTATION_UNDEFINED
@@ -41,31 +41,32 @@ class IssueListFragment() : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        if(activity is MainActivity){
+    ): View {
+        if (activity is MainActivity) {
             (activity as MainActivity?)?.title = "Issues List"
         }
         binding = FragmentIssueListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    // Post view initialization logic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setObservers()
+    }
 
-        Log.i("INSTANCE", "$issueViewModel")
+    private fun setObservers() {
         issueViewModel.items.observe(viewLifecycleOwner, {
-            if (it != null ) {
-                if(it.isNotEmpty()){
+            if (it != null) {
+                if (it.isNotEmpty()) {
                     configureRecyclerView(IssueListAdapter(it, requireActivity()))
-                    issueViewModel.idInput.value = it.last().id
-                    binding.errorMessage.visibility =  INVISIBLE
-                }else{
-                    binding.errorMessage.visibility =  VISIBLE
+                    //issueViewModel.idInput.value = it.last().id
+                    binding.errorMessage.visibility = INVISIBLE
+                } else {
+                    binding.errorMessage.visibility = VISIBLE
                 }
 
             }
         })
-
     }
 
     private fun configureRecyclerView(adapter: IssueListAdapter) {
@@ -82,14 +83,11 @@ class IssueListFragment() : Fragment() {
     }
 
     private fun openIssueViewFragment(it: Issue) {
-
         issueViewModel.idInput.value = it.id
-
-        if(orientation == Configuration.ORIENTATION_PORTRAIT ){
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             val directions =
-            IssueListFragmentDirections.showDetails()
-        findNavController().navigate(directions)
-
+                IssueListFragmentDirections.showDetails()
+            findNavController().navigate(directions)
         }
 //        val directions =
 //            IssueListFragmentDirections.showDetails(it.id!!)

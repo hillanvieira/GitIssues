@@ -27,6 +27,9 @@
         <!--<argument
             android:name="issueId"
             app:argType="long" />-->
+        <action
+            android:id="@+id/action_view_Issue_fragment_to_issueListFragment"
+            app:popUpTo="@id/issueListFragment" />
     </fragment>
 
 </navigation>

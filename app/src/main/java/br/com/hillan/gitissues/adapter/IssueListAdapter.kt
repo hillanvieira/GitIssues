@@ -1,17 +1,17 @@
 package br.com.hillan.gitissues.adapter
 
-import java.text.Format
-import android.view.ViewGroup
-import android.widget.TextView
 import android.content.Context
-import java.text.SimpleDateFormat
 import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
+import android.widget.TextView
 import androidx.cardview.widget.CardView
-import br.com.hillan.dataissues.data.Issue
 import androidx.recyclerview.widget.RecyclerView
+import br.com.hillan.dataissues.data.Issue
 import br.com.hillan.gitissues.databinding.IssueItemBinding
+import java.text.Format
+import java.text.SimpleDateFormat
 
 class IssueListAdapter(
     private val issues: List<Issue>,
