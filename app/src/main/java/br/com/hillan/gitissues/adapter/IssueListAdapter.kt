@@ -24,18 +24,26 @@ class IssueListAdapter(
     lateinit var cardExpandedSelected: CardView
     var hasCardExpanded = false
 
+    private var _binding: IssueItemBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
-        return ViewHolder(
-            IssueItemBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+        _binding = IssueItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
+
+        return ViewHolder()
 
 //        val view = LayoutInflater.from(context).inflate(R.layout.issue_item, parent, false) use without biding
 //        return ViewHolder(view)                                                             use without biding
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        _binding = null
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -44,22 +52,20 @@ class IssueListAdapter(
 //            it.title.text = issue.title
 //            it.state.text = issue.state.toString()
 //        }
-
         holder.bindView(issue)
-
     }
 
     override fun getItemCount(): Int {
         return issues.size
     }
 
-    inner class ViewHolder(private val binding: IssueItemBinding) :
+    inner class ViewHolder:
         RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var issue: Issue
 
-        val card: CardView = binding.issueCard
-        val cardSelected: CardView = binding.issueCardSelected
+        private val card: CardView = binding.issueCard
+        private val cardSelected: CardView = binding.issueCardSelected
 
         init {
             itemView.setOnClickListener {

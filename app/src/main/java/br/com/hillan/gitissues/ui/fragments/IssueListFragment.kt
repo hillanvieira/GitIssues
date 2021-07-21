@@ -24,7 +24,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class IssueListFragment() : Fragment() {
 
     private val issueViewModel: IssueViewModel by activityViewModels()
-    private lateinit var binding: FragmentIssueListBinding
+    private var _binding: FragmentIssueListBinding? = null
+    private val binding get() = _binding!!
 
     private val orientation: Int
         get() {
@@ -41,17 +42,22 @@ class IssueListFragment() : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         if (activity is MainActivity) {
             (activity as MainActivity?)?.title = "Issues List"
         }
-        binding = FragmentIssueListBinding.inflate(inflater, container, false)
+        _binding = FragmentIssueListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setObservers()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun setObservers() {
