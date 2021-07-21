@@ -3,12 +3,8 @@ package br.com.hillan.gitissues.workers
 import androidx.work.Worker
 import android.content.Intent
 import android.content.Context
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import br.com.hillan.gitissues.R
 import androidx.work.WorkerParameters
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Dispatchers
 import android.app.NotificationManager
 import android.content.SharedPreferences
 import androidx.core.app.NotificationCompat
@@ -16,18 +12,19 @@ import br.com.hillan.gitissues.ui.MainActivity
 import android.content.Context.NOTIFICATION_SERVICE
 import androidx.hilt.work.HiltWorker
 import androidx.navigation.NavDeepLinkBuilder
+import androidx.work.CoroutineWorker
 import br.com.hillan.dataissues.data.source.DefaultIssueRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.*
 import timber.log.Timber
 
 @HiltWorker
 class UpdateListWorker @AssistedInject constructor(
-    val defaultIssueRepository: DefaultIssueRepository,
+    private val defaultIssueRepository: DefaultIssueRepository,
     @Assisted context: Context,
     @Assisted workerParams: WorkerParameters
-) :
-    Worker(context, workerParams) {
+) : CoroutineWorker(context, workerParams) {
 
     var sharedpreferences: SharedPreferences =
         applicationContext.getSharedPreferences("gitissues_preferences", Context.MODE_PRIVATE)
@@ -35,34 +32,39 @@ class UpdateListWorker @AssistedInject constructor(
     var oldLastIssue: String = ""
     var newLastIssue: String = ""
 
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
+        withContext(Dispatchers.IO) {
+            oldLastIssue = sharedpreferences.getString("lastIssueTitle", "no new issues")!!
 
-        oldLastIssue = sharedpreferences.getString("lastIssueTitle", "no new issues")!!
-
-        GlobalScope.launch(Dispatchers.IO) {
             defaultIssueRepository.refreshIssues()
 
             delay(5000)
+
             //repository.lastIssue.take(1).collect { it -> newLastIssue = it.title }
 
             val lastIssue = defaultIssueRepository.getLastIssue()
-
             if (lastIssue.isSuccess) {
                 newLastIssue = lastIssue.getOrNull()!!.title
             }
 
             Timber.i("NEW LAST ISSUE $newLastIssue")
             Timber.i("PREPARING")
+
             if (oldLastIssue != newLastIssue) {
+
                 sendNotification(newLastIssue)
                 Timber.i("NOTIFYING")
-            } else {
-                Timber.i("NOT_NOTIFY")
-            }
-            sharedpreferences.edit().putString("lastIssueTitle", newLastIssue).apply()
-        }
-        Timber.i("LAUNCHED")
 
+            } else {
+
+                Timber.i("NOT_NOTIFY")
+
+            }
+
+            sharedpreferences.edit().putString("lastIssueTitle", newLastIssue).apply()
+            Timber.i("LAUNCHED")
+
+        }
         return Result.success()
     }
 
